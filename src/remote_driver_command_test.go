@@ -334,3 +334,70 @@ func Test_CommandSwitchToParentFrame_CorrectResponseCanBeReturned(t *testing.T) 
 		t.Errorf(correctResponseErrorText)
 	}
 }
+
+/*
+	WindowSize tests
+*/
+func Test_CommandWindowSize_InvalidSessionIDResultsInAnError(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	_, err := d.WindowSize()
+	if err == nil || !IsSessionIDError(err) {
+		t.Errorf(sessionIDErrorText)
+	}
+}
+
+func Test_CommandWindowSize_CommunicationErrorIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: errors.New("An error"),
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	_, err := d.WindowSize()
+	if err == nil || !IsCommunicationError(err) {
+		t.Errorf(apiCommunicationErrorText)
+	}
+}
+
+func Test_CommandWindowSize_UnmarshallingErrorIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "Invalid JSON",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	_, err := d.WindowSize()
+	if err == nil || !IsUnmarshallingError(err) {
+		t.Errorf(unmarshallingErrorText)
+	}
+}
+
+func Test_CommandWindowSize_CorrectResultIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn: `{
+			"state": "success",
+			"value": {
+				"width": 800,
+				"height": 600
+			}
+		}`,
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	resp, err := d.WindowSize()
+	if err != nil || resp.State != "success" || resp.Dimensions.Width == 0 || resp.Dimensions.Height == 0 {
+		t.Errorf(correctResponseErrorText)
+	}
+}

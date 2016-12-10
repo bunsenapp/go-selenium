@@ -198,5 +198,24 @@ func (s *seleniumWebDriver) SwitchToParentFrame() (*SwitchToParentFrameResponse,
 }
 
 func (s *seleniumWebDriver) WindowSize() (*WindowSizeResponse, error) {
-	return nil, nil
+	var response WindowSizeResponse
+	var err error
+
+	if s.sessionID == "" {
+		return nil, newSessionIDError("WindowSize()")
+	}
+
+	url := fmt.Sprintf("%s/session/%s/window/size", s.seleniumURL, s.sessionID)
+
+	resp, err := s.apiService.performRequest(url, "GET", nil)
+	if err != nil {
+		return nil, newCommunicationError(err, "WindowSize()", url, nil)
+	}
+
+	err = json.Unmarshal(resp, &response)
+	if err != nil {
+		return nil, newUnmarshallingError(err, "WindowSize()", string(resp))
+	}
+
+	return &response, nil
 }
