@@ -84,6 +84,10 @@ type WebDriver interface {
 	// WindowSize retrieves the current browser window size for the
 	// active session.
 	WindowSize() (*WindowSizeResponse, error)
+
+	// SetWindowSize sets the current browser window size for the active
+	// session.
+	SetWindowSize(dimensions *Dimensions) (*SetWindowSizeResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.

@@ -59,8 +59,14 @@ type WindowSizeResponse struct {
 // Dimensions is a type that is both returned and accept by functions. It is
 // usually only used for the window size components.
 type Dimensions struct {
-	Width  int `json:"width"`
-	Height int `json:"height"`
+	Width  uint `json:"width"`
+	Height uint `json:"height"`
+}
+
+// SetWindowSizeResponse is the response that is returned from setting the
+// window size of the current top level browsing context.
+type SetWindowSizeResponse struct {
+	State string `json:"state"`
 }
 
 func (s *seleniumWebDriver) WindowHandle() (*WindowHandleResponse, error) {
@@ -218,4 +224,38 @@ func (s *seleniumWebDriver) WindowSize() (*WindowSizeResponse, error) {
 	}
 
 	return &response, nil
+}
+
+func (s *seleniumWebDriver) SetWindowSize(dimension *Dimensions) (*SetWindowSizeResponse, error) {
+	var err error
+
+	if dimension == nil {
+		return nil, newInvalidArgumentError("Dimension was nil", "dimension", "")
+	} else if s.sessionID == "" {
+		return nil, newSessionIDError("SetWindowSize()")
+	}
+
+	url := fmt.Sprintf("%s/session/%s/window/size", s.seleniumURL, s.sessionID)
+
+	body := map[string]uint{
+		"width":  dimension.Width,
+		"height": dimension.Height,
+	}
+	json, err := json.Marshal(body)
+	if err != nil {
+		return nil, newMarshallingError(err, "SetWindowSize()", body)
+	}
+
+	jsonBytes := bytes.NewReader(json)
+	resp, err := s.stateRequest(&request{
+		url:           url,
+		method:        "POST",
+		body:          jsonBytes,
+		callingMethod: "SetWindowSize()",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &SetWindowSizeResponse{State: resp.State}, nil
 }

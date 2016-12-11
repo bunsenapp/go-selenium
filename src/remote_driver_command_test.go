@@ -401,3 +401,102 @@ func Test_CommandWindowSize_CorrectResultIsReturned(t *testing.T) {
 		t.Errorf(correctResponseErrorText)
 	}
 }
+
+/*
+	SetWindowSize tests
+*/
+
+func Test_CommandSetWindowSize_NullDimensionResultsInError(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+
+	_, err := d.SetWindowSize(nil)
+	if err == nil || !IsInvalidArgumentError(err) {
+		t.Errorf(argumentErrorText)
+	}
+}
+
+func Test_CommandSetWindowSize_InvalidSessionIDResultsInError(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+
+	dimensions := &Dimensions{
+		Width:  830,
+		Height: 255,
+	}
+
+	_, err := d.SetWindowSize(dimensions)
+	if err == nil || !IsSessionIDError(err) {
+		t.Errorf(sessionIDErrorText)
+	}
+}
+
+func Test_CommandSetWindowSize_CommunicationErrorIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: errors.New("An error"),
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	dimensions := &Dimensions{
+		Width:  830,
+		Height: 255,
+	}
+
+	_, err := d.SetWindowSize(dimensions)
+	if err == nil || !IsCommunicationError(err) {
+		t.Errorf(apiCommunicationErrorText)
+	}
+}
+
+func Test_CommandSetWindowSize_UnmarshallingErrorIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "Invalid JSON",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	dimensions := &Dimensions{
+		Width:  830,
+		Height: 255,
+	}
+
+	_, err := d.SetWindowSize(dimensions)
+	if err == nil || !IsUnmarshallingError(err) {
+		t.Errorf(unmarshallingErrorText)
+	}
+}
+
+func Test_CommandSetWindowSize_ResultIsReturnedSuccessfully(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn: `{
+			"state": "success"
+		}`,
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	dimensions := &Dimensions{
+		Width:  830,
+		Height: 255,
+	}
+
+	resp, err := d.SetWindowSize(dimensions)
+	if err != nil || resp.State != "success" {
+		t.Errorf(correctResponseErrorText)
+	}
+}
