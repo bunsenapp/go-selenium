@@ -66,7 +66,22 @@ type Dimensions struct {
 // SetWindowSizeResponse is the response that is returned from setting the
 // window size of the current top level browsing context.
 type SetWindowSizeResponse struct {
-	State string `json:"state"`
+	State string
+}
+
+// WindowPositionResponse is the response that is returned from the
+// WindowPosition call. It contains the X and Y co-ordinate of the web-exposed
+// screen area.
+type WindowPositionResponse struct {
+	State    string      `json:"state"`
+	Position Coordinates `json:"value"`
+}
+
+// Coordinates is a type that represents an X and Y position for a particular
+// element (be it a web element or browser).
+type Coordinates struct {
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
 }
 
 func (s *seleniumWebDriver) WindowHandle() (*WindowHandleResponse, error) {
@@ -258,4 +273,8 @@ func (s *seleniumWebDriver) SetWindowSize(dimension *Dimensions) (*SetWindowSize
 	}
 
 	return &SetWindowSizeResponse{State: resp.State}, nil
+}
+
+func (s *seleniumWebDriver) WindowPosition() (*WindowPositionResponse, error) {
+	return nil, nil
 }
