@@ -69,19 +69,10 @@ type SetWindowSizeResponse struct {
 	State string
 }
 
-// WindowPositionResponse is the response that is returned from the
-// WindowPosition call. It contains the X and Y co-ordinate of the web-exposed
-// screen area.
-type WindowPositionResponse struct {
-	State    string      `json:"state"`
-	Position Coordinates `json:"value"`
-}
-
-// Coordinates is a type that represents an X and Y position for a particular
-// element (be it a web element or browser).
-type Coordinates struct {
-	X float64 `json:"x"`
-	Y float64 `json:"y"`
+// MaximizeWindowResponse is the response that is returned from increasing the
+// browser to match the viewport.
+type MaximizeWindowResponse struct {
+	State string
 }
 
 func (s *seleniumWebDriver) WindowHandle() (*WindowHandleResponse, error) {
@@ -275,6 +266,24 @@ func (s *seleniumWebDriver) SetWindowSize(dimension *Dimensions) (*SetWindowSize
 	return &SetWindowSizeResponse{State: resp.State}, nil
 }
 
-func (s *seleniumWebDriver) WindowPosition() (*WindowPositionResponse, error) {
-	return nil, nil
+func (s *seleniumWebDriver) MaximizeWindow() (*MaximizeWindowResponse, error) {
+	var err error
+
+	if s.sessionID == "" {
+		return nil, newSessionIDError("MaximizeWindow()")
+	}
+
+	url := fmt.Sprintf("%s/session/%s/window/maximize", s.seleniumURL, s.sessionID)
+
+	resp, err := s.stateRequest(&request{
+		url:           url,
+		method:        "POST",
+		body:          nil,
+		callingMethod: "MaximizeWindow()",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &MaximizeWindowResponse{State: resp.State}, nil
 }

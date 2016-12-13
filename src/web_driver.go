@@ -89,9 +89,8 @@ type WebDriver interface {
 	// session.
 	SetWindowSize(dimensions *Dimensions) (*SetWindowSizeResponse, error)
 
-	// WindowPosition gets the current X and Y co-ordinates of the session's
-	// browser.
-	WindowPosition() (*WindowPositionResponse, error)
+	// Maximize increases the current browser window to its maximum size.
+	MaximizeWindow() (*MaximizeWindowResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.

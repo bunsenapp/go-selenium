@@ -500,3 +500,67 @@ func Test_CommandSetWindowSize_ResultIsReturnedSuccessfully(t *testing.T) {
 		t.Errorf(correctResponseErrorText)
 	}
 }
+
+/*
+	MaximizeWindow tests
+*/
+func Test_CommandMaximizeWindow_InvalidSessionIDResultsInError(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+
+	_, err := d.MaximizeWindow()
+	if err == nil || !IsSessionIDError(err) {
+		t.Errorf(sessionIDErrorText)
+	}
+}
+
+func Test_CommandMaximizeWindow_CommunicationErrorIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: errors.New("An error"),
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	_, err := d.MaximizeWindow()
+	if err == nil || !IsCommunicationError(err) {
+		t.Errorf(apiCommunicationErrorText)
+	}
+}
+
+func Test_CommandMaximizeWindow_UnmarshallingErrorIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "Invalid JSON",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	_, err := d.MaximizeWindow()
+	if err == nil || !IsUnmarshallingError(err) {
+		t.Errorf(unmarshallingErrorText)
+	}
+}
+
+func Test_CommandMaximizeWindow_ResultIsReturnedSuccessfully(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn: `{
+			"state": "success"
+		}`,
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	resp, err := d.MaximizeWindow()
+	if err != nil || resp.State != "success" {
+		t.Errorf(correctResponseErrorText)
+	}
+}
