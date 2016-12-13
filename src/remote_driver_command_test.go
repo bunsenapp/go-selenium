@@ -224,10 +224,9 @@ func Test_CommandSwitchToFrame_InvalidByResultsInError(t *testing.T) {
 	d := setUpDriver(setUpDefaultCaps(), api)
 	d.sessionID = "12345"
 
-	byCSS, _ := ByCSSSelector("test")
 	invalidBys := []By{
 		nil,
-		byCSS,
+		ByCSSSelector("test"),
 	}
 
 	for _, i := range invalidBys {
@@ -247,8 +246,7 @@ func Test_CommandSwitchToFrame_APICommunicationErrorIsReturned(t *testing.T) {
 	d := setUpDriver(setUpDefaultCaps(), api)
 	d.sessionID = "12345"
 
-	idx, _ := ByIndex(32)
-	_, err := d.SwitchToFrame(idx)
+	_, err := d.SwitchToFrame(ByIndex(1))
 	if err == nil || !IsCommunicationError(err) {
 		t.Errorf(apiCommunicationErrorText)
 	}
@@ -265,8 +263,7 @@ func Test_CommandSwitchToFrame_CorrectResponseIsReturned(t *testing.T) {
 	d := setUpDriver(setUpDefaultCaps(), api)
 	d.sessionID = "12345"
 
-	idx, _ := ByIndex(32)
-	resp, err := d.SwitchToFrame(idx)
+	resp, err := d.SwitchToFrame(ByIndex(32))
 	if err != nil || resp.State != "success" {
 		t.Errorf(correctResponseErrorText)
 	}

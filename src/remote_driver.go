@@ -66,33 +66,20 @@ func SessionImplicitWaitTimeout(to int) Timeout {
 }
 
 // ByIndex accepts an integer that represents what the index of an element is.
-// An integer greater than 2^16-1 will result in an error (as per the W3C
-// specification).
-func ByIndex(index uint) (By, error) {
-	if index > 65535 {
-		return nil, newInvalidArgumentError("Index out of range in ByIndex()", "index", string(index))
-	}
-
-	by := &by{
+func ByIndex(index uint) By {
+	return &by{
 		t:     "index",
 		value: index,
 	}
-	return by, nil
 }
 
-// ByClass accepts a class name to allow an element to be found. If you do not
-// prefix your class name with the class identifier (a period .), one will be
-// added for you.
-func ByCSSSelector(selector string) (By, error) {
-	if selector == "" {
-		return nil, newInvalidArgumentError("Argument empty in ByCSSSelector()", "selector", selector)
-	}
-
-	by := &by{
+// ByCSSSelector accepts a CSS selector (i.e. ul#id > a) and for use in the
+// FindElement(s) functions.
+func ByCSSSelector(selector string) By {
+	return &by{
 		t:     "css selector",
 		value: selector,
 	}
-	return by, nil
 }
 
 type seleniumWebDriver struct {

@@ -91,6 +91,16 @@ type WebDriver interface {
 
 	// Maximize increases the current browser window to its maximum size.
 	MaximizeWindow() (*MaximizeWindowResponse, error)
+
+	/*
+		ELEMENT METHODS
+	*/
+	FindElement(by By) (Element, error)
+}
+
+// Element is an interface which specifies what all WebDriver elements
+// must do.
+type Element interface {
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.

@@ -92,20 +92,6 @@ func Test_NewSelenium_TrailingSlashIsRemovedIfTheUserDoesNotSpecifyOne(t *testin
 /*
 	By tests
 */
-func Test_ByByIndex_OutOfRangeIndexReturnsError(t *testing.T) {
-	outOfRangeIndexes := []uint{
-		65536,
-		234234,
-		45694569,
-	}
-	for _, i := range outOfRangeIndexes {
-		_, err := ByIndex(i)
-		if err == nil || !IsInvalidArgumentError(err) {
-			t.Errorf(argumentErrorText)
-		}
-	}
-}
-
 func Test_ByByIndex_CorrectIndexReturnsAsExpected(t *testing.T) {
 	correctIndexes := []uint{
 		1,
@@ -113,16 +99,9 @@ func Test_ByByIndex_CorrectIndexReturnsAsExpected(t *testing.T) {
 		65535,
 	}
 	for _, i := range correctIndexes {
-		r, err := ByIndex(i)
-		if err != nil || r.Type() != "index" || r.Value().(uint) != i {
+		r := ByIndex(i)
+		if r.Type() != "index" || r.Value().(uint) != i {
 			t.Errorf(correctResponseErrorText)
 		}
-	}
-}
-
-func Test_ByByCSSSelector_EmptyClassReturnsAnError(t *testing.T) {
-	_, err := ByCSSSelector("")
-	if err == nil || !IsInvalidArgumentError(err) {
-		t.Errorf(argumentErrorText)
 	}
 }

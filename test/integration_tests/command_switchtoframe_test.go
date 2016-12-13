@@ -21,8 +21,7 @@ func Test_CommandSwitchToFrame_CorrectResponseIsReturnedByIndex(t *testing.T) {
 		errorAndWrap(t, "Error was thrown or result was not a success.", err)
 	}
 
-	idx, _ := goselenium.ByIndex(0)
-	resp, err := driver.SwitchToFrame(idx)
+	resp, err := driver.SwitchToFrame(goselenium.ByIndex(0))
 	if err != nil || resp.State != "success" {
 		errorAndWrap(t, "Error was thrown or result was not a success", err)
 	}
@@ -45,8 +44,7 @@ func Test_CommandSwitchToFrame_InvalidByResultsInAnError(t *testing.T) {
 		errorAndWrap(t, "Error was thrown or result was not a success.", err)
 	}
 
-	selector, _ := goselenium.ByCSSSelector("iframe")
-	resp, err := driver.SwitchToFrame(selector)
+	resp, err := driver.SwitchToFrame(goselenium.ByCSSSelector("iframe"))
 	if err == nil || !goselenium.IsInvalidArgumentError(err) {
 		errorAndWrap(t, "Error was not thrown or was not the expected type.", err)
 	}
