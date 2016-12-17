@@ -113,6 +113,10 @@ type WebDriver interface {
 type Element interface {
 	// ID is the assigned ID for the element returned from the Selenium driver.
 	ID() string
+
+	// Selected gets whether or not the current element is selected. This only
+	// makes sense for inputs such as radio buttons and checkboxes.
+	Selected() (*ElementSelectedResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.
