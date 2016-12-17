@@ -95,9 +95,15 @@ type WebDriver interface {
 	/*
 		ELEMENT METHODS
 	*/
-	// FindElement finds an element via a By implementation (i.e. index,
-	// CSS selector, x-path).
+
+	// FindElement finds an element via a By implementation (i.e. CSS selector,
+	// x-path). Attempting to find via index will result in an argument error
+	// being thrown.
 	FindElement(by By) (Element, error)
+
+	// FindElements works the sameway as FindElement but can return more than
+	// one result.
+	FindElements(by By) ([]Element, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
