@@ -21,8 +21,7 @@ func Test_CommandSwitchToParentFrame_CorrectResponseCanBeReturned(t *testing.T) 
 		errorAndWrap(t, "Error was thrown whilst navigating.", err)
 	}
 
-	idx, _ := goselenium.ByIndex(0)
-	_, err = driver.SwitchToFrame(idx)
+	_, err = driver.SwitchToFrame(goselenium.ByIndex(0))
 	if err != nil {
 		errorAndWrap(t, "Error was thrown whilst switching to frame 0.", err)
 	}

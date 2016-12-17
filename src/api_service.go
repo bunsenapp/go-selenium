@@ -2,6 +2,7 @@ package goselenium
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -10,6 +11,15 @@ import (
 
 type apiService interface {
 	performRequest(string, string, io.Reader) ([]byte, error)
+}
+
+type requestError struct {
+	State string            `json:"state"`
+	Value requestErrorValue `json:"value"`
+}
+
+type requestErrorValue struct {
+	Message string `json:"localizedMessage"`
 }
 
 type seleniumAPIService struct{}
@@ -25,15 +35,25 @@ func (a *seleniumAPIService) performRequest(url string, method string, body io.R
 	if err != nil {
 		return nil, err
 	}
-	if resp.StatusCode != 200 {
-		return nil, errors.New(fmt.Sprintf("Status code %v returned", resp.StatusCode))
-	}
 
 	defer resp.Body.Close()
 
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.Body)
 	r := buf.Bytes()
+
+	if resp.StatusCode != 200 {
+		var reqErr requestError
+		var errStr string
+
+		err := json.Unmarshal(r, &reqErr)
+		if err == nil {
+			errStr = fmt.Sprintf("Status code %v returned, message: %v, information: %v", resp.StatusCode, reqErr.State, reqErr.Value.Message)
+		} else {
+			errStr = fmt.Sprintf("Status code %v returned with no body", resp.StatusCode)
+		}
+		return nil, errors.New(errStr)
+	}
 
 	return r, nil
 }

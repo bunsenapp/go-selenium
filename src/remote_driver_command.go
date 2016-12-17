@@ -79,8 +79,8 @@ func (s *seleniumWebDriver) WindowHandle() (*WindowHandleResponse, error) {
 	var response WindowHandleResponse
 	var err error
 
-	if s.sessionID == "" {
-		return nil, newSessionIDError("WindowHandle()")
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("WindowHandle")
 	}
 
 	url := fmt.Sprintf("%s/session/%s/window", s.seleniumURL, s.sessionID)
@@ -107,20 +107,20 @@ func (s *seleniumWebDriver) CloseWindow() (*CloseWindowResponse, error) {
 	var response CloseWindowResponse
 	var err error
 
-	if s.sessionID == "" {
-		return nil, newSessionIDError("CloseWindow()")
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("CloseWindow")
 	}
 
 	url := fmt.Sprintf("%s/session/%s/window", s.seleniumURL, s.sessionID)
 
 	resp, err := s.apiService.performRequest(url, "DELETE", nil)
 	if err != nil {
-		return nil, newCommunicationError(err, "CloseWindow()", url, resp)
+		return nil, newCommunicationError(err, "CloseWindow", url, resp)
 	}
 
 	err = json.Unmarshal(resp, &response)
 	if err != nil {
-		return nil, newUnmarshallingError(err, "CloseWindow()", string(resp))
+		return nil, newUnmarshallingError(err, "CloseWindow", string(resp))
 	}
 
 	return &response, nil
@@ -134,20 +134,20 @@ func (s *seleniumWebDriver) WindowHandles() (*WindowHandlesResponse, error) {
 	var response WindowHandlesResponse
 	var err error
 
-	if s.sessionID == "" {
-		return nil, newSessionIDError("WindowHandles()")
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("WindowHandles")
 	}
 
 	url := fmt.Sprintf("%s/session/%s/window/handles", s.seleniumURL, s.sessionID)
 
 	resp, err := s.apiService.performRequest(url, "GET", nil)
 	if err != nil {
-		return nil, newCommunicationError(err, "WindowHandles()", url, resp)
+		return nil, newCommunicationError(err, "WindowHandles", url, resp)
 	}
 
 	err = json.Unmarshal(resp, &response)
 	if err != nil {
-		return nil, newUnmarshallingError(err, "WindowHandles()", string(resp))
+		return nil, newUnmarshallingError(err, "WindowHandles", string(resp))
 	}
 
 	return &response, nil
@@ -156,11 +156,11 @@ func (s *seleniumWebDriver) WindowHandles() (*WindowHandlesResponse, error) {
 func (s *seleniumWebDriver) SwitchToFrame(by By) (*SwitchToFrameResponse, error) {
 	var err error
 
-	if s.sessionID == "" {
-		return nil, newSessionIDError("SwitchToFrame()")
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("SwitchToFrame")
 	}
 	if by == nil || (by.Type() != "index") {
-		return nil, newInvalidArgumentError("By was not of required type in SwitchToFrame()", "by", "")
+		return nil, newInvalidArgumentError("By was not of required type in SwitchToFrame", "by", "")
 	}
 
 	url := fmt.Sprintf("%s/session/%s/frame", s.seleniumURL, s.sessionID)
@@ -170,7 +170,7 @@ func (s *seleniumWebDriver) SwitchToFrame(by By) (*SwitchToFrameResponse, error)
 	}
 	requestJSON, err := json.Marshal(params)
 	if err != nil {
-		return nil, newMarshallingError(err, "SwitchToFrame()", params)
+		return nil, newMarshallingError(err, "SwitchToFrame", params)
 	}
 
 	body := bytes.NewReader(requestJSON)
@@ -178,7 +178,7 @@ func (s *seleniumWebDriver) SwitchToFrame(by By) (*SwitchToFrameResponse, error)
 		url:           url,
 		method:        "POST",
 		body:          body,
-		callingMethod: "SwitchToFrame()",
+		callingMethod: "SwitchToFrame",
 	})
 	if err != nil {
 		return nil, err
@@ -190,8 +190,8 @@ func (s *seleniumWebDriver) SwitchToFrame(by By) (*SwitchToFrameResponse, error)
 func (s *seleniumWebDriver) SwitchToParentFrame() (*SwitchToParentFrameResponse, error) {
 	var err error
 
-	if s.sessionID == "" {
-		return nil, newSessionIDError("SwitchToParentFrame()")
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("SwitchToParentFrame")
 	}
 
 	url := fmt.Sprintf("%s/session/%s/frame/parent", s.seleniumURL, s.sessionID)
@@ -200,7 +200,7 @@ func (s *seleniumWebDriver) SwitchToParentFrame() (*SwitchToParentFrameResponse,
 		url:           url,
 		method:        "POST",
 		body:          nil,
-		callingMethod: "SwitchToParentFrame()",
+		callingMethod: "SwitchToParentFrame",
 	})
 	if err != nil {
 		return nil, err
@@ -213,20 +213,20 @@ func (s *seleniumWebDriver) WindowSize() (*WindowSizeResponse, error) {
 	var response WindowSizeResponse
 	var err error
 
-	if s.sessionID == "" {
-		return nil, newSessionIDError("WindowSize()")
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("WindowSize")
 	}
 
 	url := fmt.Sprintf("%s/session/%s/window/size", s.seleniumURL, s.sessionID)
 
 	resp, err := s.apiService.performRequest(url, "GET", nil)
 	if err != nil {
-		return nil, newCommunicationError(err, "WindowSize()", url, nil)
+		return nil, newCommunicationError(err, "WindowSize", url, nil)
 	}
 
 	err = json.Unmarshal(resp, &response)
 	if err != nil {
-		return nil, newUnmarshallingError(err, "WindowSize()", string(resp))
+		return nil, newUnmarshallingError(err, "WindowSize", string(resp))
 	}
 
 	return &response, nil
@@ -237,8 +237,8 @@ func (s *seleniumWebDriver) SetWindowSize(dimension *Dimensions) (*SetWindowSize
 
 	if dimension == nil {
 		return nil, newInvalidArgumentError("Dimension was nil", "dimension", "")
-	} else if s.sessionID == "" {
-		return nil, newSessionIDError("SetWindowSize()")
+	} else if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("SetWindowSize")
 	}
 
 	url := fmt.Sprintf("%s/session/%s/window/size", s.seleniumURL, s.sessionID)
@@ -249,7 +249,7 @@ func (s *seleniumWebDriver) SetWindowSize(dimension *Dimensions) (*SetWindowSize
 	}
 	json, err := json.Marshal(body)
 	if err != nil {
-		return nil, newMarshallingError(err, "SetWindowSize()", body)
+		return nil, newMarshallingError(err, "SetWindowSize", body)
 	}
 
 	jsonBytes := bytes.NewReader(json)
@@ -257,7 +257,7 @@ func (s *seleniumWebDriver) SetWindowSize(dimension *Dimensions) (*SetWindowSize
 		url:           url,
 		method:        "POST",
 		body:          jsonBytes,
-		callingMethod: "SetWindowSize()",
+		callingMethod: "SetWindowSize",
 	})
 	if err != nil {
 		return nil, err
@@ -269,8 +269,8 @@ func (s *seleniumWebDriver) SetWindowSize(dimension *Dimensions) (*SetWindowSize
 func (s *seleniumWebDriver) MaximizeWindow() (*MaximizeWindowResponse, error) {
 	var err error
 
-	if s.sessionID == "" {
-		return nil, newSessionIDError("MaximizeWindow()")
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("MaximizeWindow")
 	}
 
 	url := fmt.Sprintf("%s/session/%s/window/maximize", s.seleniumURL, s.sessionID)
@@ -279,7 +279,7 @@ func (s *seleniumWebDriver) MaximizeWindow() (*MaximizeWindowResponse, error) {
 		url:           url,
 		method:        "POST",
 		body:          nil,
-		callingMethod: "MaximizeWindow()",
+		callingMethod: "MaximizeWindow",
 	})
 	if err != nil {
 		return nil, err

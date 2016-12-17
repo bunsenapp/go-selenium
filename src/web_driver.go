@@ -95,12 +95,18 @@ type WebDriver interface {
 	/*
 		ELEMENT METHODS
 	*/
+	// FindElement finds an element via a By implementation (i.e. index,
+	// CSS selector, x-path).
 	FindElement(by By) (Element, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
-// must do.
+// must do. Any requests which involve this element (i.e. FindElements that
+// are children of the current element) will be specified. Anything not related
+// will exist within the WebDriver interface/implementation.
 type Element interface {
+	// ID is the assigned ID for the element returned from the Selenium driver.
+	ID() string
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.

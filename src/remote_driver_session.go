@@ -49,18 +49,18 @@ func (s *seleniumWebDriver) CreateSession() (*CreateSessionResponse, error) {
 
 	capabilitiesJSON, err := s.capabilities.toJSON()
 	if err != nil {
-		return nil, newMarshallingError(err, "CreateSession()", s.capabilities)
+		return nil, newMarshallingError(err, "CreateSession", s.capabilities)
 	}
 
 	body := bytes.NewReader([]byte(capabilitiesJSON))
 	resp, err := s.apiService.performRequest(url, "POST", body)
 	if err != nil {
-		return nil, newCommunicationError(err, "CreateSession()", url, resp)
+		return nil, newCommunicationError(err, "CreateSession", url, resp)
 	}
 
 	err = json.Unmarshal(resp, &response)
 	if err != nil {
-		return nil, newUnmarshallingError(err, "CreateSession()", string(resp))
+		return nil, newUnmarshallingError(err, "CreateSession", string(resp))
 	}
 
 	s.sessionID = response.SessionID
@@ -73,18 +73,18 @@ func (s *seleniumWebDriver) DeleteSession() (*DeleteSessionResponse, error) {
 
 	url := fmt.Sprintf("%s/session/%s", s.seleniumURL, s.sessionID)
 
-	if s.sessionID == "" {
-		return nil, newSessionIDError("DeleteSession()")
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("DeleteSession")
 	}
 
 	resp, err := s.apiService.performRequest(url, "DELETE", nil)
 	if err != nil {
-		return nil, newCommunicationError(err, "DeleteSession()", url, resp)
+		return nil, newCommunicationError(err, "DeleteSession", url, resp)
 	}
 
 	err = json.Unmarshal(resp, &response)
 	if err != nil {
-		return nil, newUnmarshallingError(err, "DeleteSession()", string(resp))
+		return nil, newUnmarshallingError(err, "DeleteSession", string(resp))
 	}
 
 	return &response, nil
@@ -113,8 +113,8 @@ func (s *seleniumWebDriver) SetSessionTimeout(to Timeout) (*SetSessionTimeoutRes
 
 	url := fmt.Sprintf("%s/session/%s/timeouts", s.seleniumURL, s.sessionID)
 
-	if s.sessionID == "" {
-		return nil, newSessionIDError("SetSessionTimeout()")
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("SetSessionTimeout")
 	}
 
 	params := map[string]interface{}{
@@ -123,7 +123,7 @@ func (s *seleniumWebDriver) SetSessionTimeout(to Timeout) (*SetSessionTimeoutRes
 	}
 	marshalledJSON, err := json.Marshal(params)
 	if err != nil {
-		return nil, newMarshallingError(err, "SetSessionTimeout()", params)
+		return nil, newMarshallingError(err, "SetSessionTimeout", params)
 	}
 
 	bodyReader := bytes.NewReader([]byte(marshalledJSON))
