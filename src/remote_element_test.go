@@ -2,7 +2,6 @@ package goselenium
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 )
 
@@ -63,8 +62,6 @@ func Test_ElementSelected_CorrectResponseIsReturned(t *testing.T) {
 	el := newSeleniumElement("0", d)
 	resp, err := el.Selected()
 	if err != nil || resp.State != "success" || resp.Selected != true {
-		fmt.Println(err)
-		fmt.Println(resp)
 		t.Errorf(correctResponseErrorText)
 	}
 }
