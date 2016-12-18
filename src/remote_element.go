@@ -20,6 +20,12 @@ type ElementSelectedResponse struct {
 	Selected bool   `json:"value"`
 }
 
+// ElementAttributeResponse is the response returned from the Attribute call.
+type ElementAttributeResponse struct {
+	State string `json:"state"`
+	Value string `json:"value"`
+}
+
 type seleniumElement struct {
 	id string
 	wd *seleniumWebDriver
@@ -46,4 +52,23 @@ func (s *seleniumElement) Selected() (*ElementSelectedResponse, error) {
 	}
 
 	return &el, nil
+}
+
+func (s *seleniumElement) Attribute(att string) (*ElementAttributeResponse, error) {
+	var response ElementAttributeResponse
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/element/%s/attribute/%s", s.wd.seleniumURL, s.wd.sessionID, s.ID(), att)
+
+	resp, err := s.wd.apiService.performRequest(url, "GET", nil)
+	if err != nil {
+		return nil, newCommunicationError(err, "Attribute", url, nil)
+	}
+
+	err = json.Unmarshal(resp, &response)
+	if err != nil {
+		return nil, newUnmarshallingError(err, "Attribute", string(resp))
+	}
+
+	return &response, nil
 }

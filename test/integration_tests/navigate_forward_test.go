@@ -20,7 +20,7 @@ func Test_NavigateForward_NavigateFowardWorksCorrectly(t *testing.T) {
 		errorAndWrap(t, "Error was thrown whilst navigating or result was not a success.", err)
 	}
 
-	goResp, err = driver.Go("https://bbc.co.uk")
+	goResp, err = driver.Go("https://news.ycombinator.com")
 	if err != nil || goResp.State != "success" {
 		errorAndWrap(t, "Error was thrown whilst navigating or result was not a success.", err)
 	}
@@ -36,7 +36,7 @@ func Test_NavigateForward_NavigateFowardWorksCorrectly(t *testing.T) {
 	}
 
 	currentURLResp, err := driver.CurrentURL()
-	if err != nil || !strings.HasPrefix(currentURLResp.URL, "https://www.bbc.co.uk") {
+	if err != nil || !strings.HasPrefix(currentURLResp.URL, "https://news.ycombinator.com") {
 		errorAndWrap(t, "Error was thrown or URL was not what it should have been.", err)
 	}
 

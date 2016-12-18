@@ -117,6 +117,10 @@ type Element interface {
 	// Selected gets whether or not the current element is selected. This only
 	// makes sense for inputs such as radio buttons and checkboxes.
 	Selected() (*ElementSelectedResponse, error)
+
+	// Attribute retrieves an attribute (i.e. href, class) of the current
+	// active element.
+	Attribute(att string) (*ElementAttributeResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.
