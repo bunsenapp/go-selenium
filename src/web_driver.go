@@ -121,6 +121,9 @@ type Element interface {
 	// Attribute retrieves an attribute (i.e. href, class) of the current
 	// active element.
 	Attribute(att string) (*ElementAttributeResponse, error)
+
+	// CSSValue retrieves a CSS property associated with the current element. As an example, this could be the 'background' or 'font-family' properties.
+	CSSValue(prop string) (*ElementCSSValueResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.
