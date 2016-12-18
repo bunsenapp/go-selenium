@@ -1,6 +1,7 @@
 package integrationtests
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/bunsenapp/go-selenium/src"
@@ -22,6 +23,12 @@ func Test_ElementAttribute_CanRetrieveAttributeCorrectly(t *testing.T) {
 			attr: "maxlength",
 			val:  "2048",
 		},
+		{
+			url:  "https://news.ycombinator.com",
+			by:   goselenium.ByCSSSelector("b.hnname > a"),
+			attr: "href",
+			val:  "news",
+		},
 	}
 	for _, te := range tests {
 		driver := createDriver(t)
@@ -41,7 +48,7 @@ func Test_ElementAttribute_CanRetrieveAttributeCorrectly(t *testing.T) {
 		}
 
 		att, err := el.Attribute(te.attr)
-		if err != nil || att.Value != te.val {
+		if err != nil || !strings.Contains(att.Value, te.val) {
 			errorAndWrap(t, "Error whilst retrieving attribute or attribute value was not correct", err)
 		}
 
