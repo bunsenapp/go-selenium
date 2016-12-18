@@ -33,6 +33,12 @@ type ElementCSSValueResponse struct {
 	Value string
 }
 
+// ElementTextResponse is the response returned from calling the Text method.
+type ElementTextResponse struct {
+	State string
+	Text  string
+}
+
 type seleniumElement struct {
 	id string
 	wd *seleniumWebDriver
@@ -95,4 +101,22 @@ func (s *seleniumElement) CSSValue(prop string) (*ElementCSSValueResponse, error
 	}
 
 	return &ElementCSSValueResponse{State: resp.State, Value: resp.Value}, nil
+}
+
+func (s *seleniumElement) Text() (*ElementTextResponse, error) {
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/element/%s/text", s.wd.seleniumURL, s.wd.sessionID, s.ID())
+
+	resp, err := s.wd.valueRequest(&request{
+		url:           url,
+		method:        "GET",
+		body:          nil,
+		callingMethod: "Text",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &ElementTextResponse{State: resp.State, Text: resp.Value}, nil
 }

@@ -124,6 +124,9 @@ type Element interface {
 
 	// CSSValue retrieves a CSS property associated with the current element. As an example, this could be the 'background' or 'font-family' properties.
 	CSSValue(prop string) (*ElementCSSValueResponse, error)
+
+	// Text gets the value of element.innerText for the current element.
+	Text() (*ElementTextResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.
