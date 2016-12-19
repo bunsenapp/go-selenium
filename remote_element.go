@@ -60,6 +60,12 @@ type Rectangle struct {
 	Y int `json:"y"`
 }
 
+// ElementEnabledResponse is the response returned from calling the Enabled method.
+type ElementEnabledResponse struct {
+	State   string `json:"state"`
+	Enabled bool   `json:"value"`
+}
+
 type seleniumElement struct {
 	id string
 	wd *seleniumWebDriver
@@ -174,6 +180,25 @@ func (s *seleniumElement) Rectangle() (*ElementRectangleResponse, error) {
 	err = json.Unmarshal(resp, &response)
 	if err != nil {
 		return nil, newUnmarshallingError(err, "Rectangle", string(resp))
+	}
+
+	return &response, nil
+}
+
+func (s *seleniumElement) Enabled() (*ElementEnabledResponse, error) {
+	var response ElementEnabledResponse
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/element/%s/enabled", s.wd.seleniumURL, s.wd.sessionID, s.ID())
+
+	resp, err := s.wd.apiService.performRequest(url, "GET", nil)
+	if err != nil {
+		return nil, newCommunicationError(err, "Enabled", url, nil)
+	}
+
+	err = json.Unmarshal(resp, &response)
+	if err != nil {
+		return nil, newUnmarshallingError(err, "Enabled", string(resp))
 	}
 
 	return &response, nil

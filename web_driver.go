@@ -135,6 +135,9 @@ type Element interface {
 	// Rectangle gets the dimensions and co-ordinates of the currently selected
 	// element.
 	Rectangle() (*ElementRectangleResponse, error)
+
+	// Enabled gets whether or not the currently selected elemented is enabled.
+	Enabled() (*ElementEnabledResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.

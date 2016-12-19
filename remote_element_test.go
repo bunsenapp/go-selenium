@@ -12,9 +12,8 @@ func Test_RemoteElement_IDCanBeRetrieved(t *testing.T) {
 	}
 }
 
-/*
-	SELECTED TESTS
-*/
+/* SELECTED TESTS
+ */
 func Test_ElementSelected_CommunicationErrorIsReturnedCorrectly(t *testing.T) {
 	api := &testableAPIService{
 		jsonToReturn:  "",
@@ -337,6 +336,60 @@ func Test_ElementRectangle_CorrectResponseIsReturned(t *testing.T) {
 	el := newSeleniumElement("0", d)
 	resp, err := el.Rectangle()
 	if err != nil || resp.State != "success" || resp.Rectangle.X != 100 || resp.Rectangle.Height != 50 {
+		t.Errorf(correctResponseErrorText)
+	}
+}
+
+/*
+	ENABLED TESTS
+*/
+func Test_ElementEnabled_CommunicationErrorIsReturnedCorrectly(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: errors.New("An error :<"),
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	el := newSeleniumElement("0", d)
+	_, err := el.Enabled()
+	if err == nil || !IsCommunicationError(err) {
+		t.Errorf(apiCommunicationErrorText)
+	}
+}
+
+func Test_ElementEnabled_UnmarshallingErrorIsReturnedCorrectly(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "Invalid JSON!",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	el := newSeleniumElement("0", d)
+	_, err := el.Enabled()
+	if err == nil || !IsUnmarshallingError(err) {
+		t.Errorf(unmarshallingErrorText)
+	}
+}
+
+func Test_ElementEnabled_CorrectResponseIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn: `{
+			"state": "success",
+			"value": true
+		}`,
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	el := newSeleniumElement("0", d)
+	resp, err := el.Enabled()
+	if err != nil || resp.State != "success" || !resp.Enabled {
 		t.Errorf(correctResponseErrorText)
 	}
 }
