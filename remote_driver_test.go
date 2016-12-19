@@ -20,7 +20,7 @@ func setUpDefaultCaps() *Capabilities {
 	return &caps
 }
 
-func setUpDriver(caps *Capabilities, api apiService) *seleniumWebDriver {
+func setUpDriver(caps *Capabilities, api apiServicer) *seleniumWebDriver {
 	return &seleniumWebDriver{
 		seleniumURL:  "http://localhost:4444/wd/hub/",
 		capabilities: caps,

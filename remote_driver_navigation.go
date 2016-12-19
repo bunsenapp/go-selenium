@@ -46,13 +46,13 @@ type TitleResponse struct {
 }
 
 func (s *seleniumWebDriver) Go(goURL string) (*GoResponse, error) {
-	var err error
-
-	url := fmt.Sprintf("%s/session/%s/url", s.seleniumURL, s.sessionID)
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("Go")
 	}
+
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/url", s.seleniumURL, s.sessionID)
 
 	invalidURL := goURL == ""
 	validProtocol := strings.HasPrefix(goURL, "https://") || strings.HasPrefix(goURL, "http://")
@@ -83,14 +83,14 @@ func (s *seleniumWebDriver) Go(goURL string) (*GoResponse, error) {
 }
 
 func (s *seleniumWebDriver) CurrentURL() (*CurrentURLResponse, error) {
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("CurrentURL")
+	}
+
 	var response CurrentURLResponse
 	var err error
 
 	url := fmt.Sprintf("%s/session/%s/url", s.seleniumURL, s.sessionID)
-
-	if len(s.sessionID) == 0 {
-		return nil, newSessionIDError("CurrentURL")
-	}
 
 	resp, err := s.valueRequest(&request{
 		url:           url,
@@ -110,13 +110,13 @@ func (s *seleniumWebDriver) CurrentURL() (*CurrentURLResponse, error) {
 }
 
 func (s *seleniumWebDriver) Back() (*BackResponse, error) {
-	var err error
-
-	url := fmt.Sprintf("%s/session/%s/back", s.seleniumURL, s.sessionID)
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("Back")
 	}
+
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/back", s.seleniumURL, s.sessionID)
 
 	resp, err := s.stateRequest(&request{
 		url:           url,
@@ -132,13 +132,13 @@ func (s *seleniumWebDriver) Back() (*BackResponse, error) {
 }
 
 func (s *seleniumWebDriver) Forward() (*ForwardResponse, error) {
-	var err error
-
-	url := fmt.Sprintf("%s/session/%s/forward", s.seleniumURL, s.sessionID)
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("Forward")
 	}
+
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/forward", s.seleniumURL, s.sessionID)
 
 	resp, err := s.stateRequest(&request{
 		url:           url,
@@ -154,13 +154,13 @@ func (s *seleniumWebDriver) Forward() (*ForwardResponse, error) {
 }
 
 func (s *seleniumWebDriver) Refresh() (*RefreshResponse, error) {
-	var err error
-
-	url := fmt.Sprintf("%s/session/%s/refresh", s.seleniumURL, s.sessionID)
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("Refresh")
 	}
+
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/refresh", s.seleniumURL, s.sessionID)
 
 	resp, err := s.stateRequest(&request{
 		url:           url,
@@ -176,14 +176,14 @@ func (s *seleniumWebDriver) Refresh() (*RefreshResponse, error) {
 }
 
 func (s *seleniumWebDriver) Title() (*TitleResponse, error) {
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("Title")
+	}
+
 	var response TitleResponse
 	var err error
 
 	url := fmt.Sprintf("%s/session/%s/title", s.seleniumURL, s.sessionID)
-
-	if len(s.sessionID) == 0 {
-		return nil, newSessionIDError("Title")
-	}
 
 	resp, err := s.valueRequest(&request{
 		url:           url,

@@ -68,14 +68,14 @@ func (s *seleniumWebDriver) CreateSession() (*CreateSessionResponse, error) {
 }
 
 func (s *seleniumWebDriver) DeleteSession() (*DeleteSessionResponse, error) {
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("DeleteSession")
+	}
+
 	var response DeleteSessionResponse
 	var err error
 
 	url := fmt.Sprintf("%s/session/%s", s.seleniumURL, s.sessionID)
-
-	if len(s.sessionID) == 0 {
-		return nil, newSessionIDError("DeleteSession")
-	}
 
 	resp, err := s.apiService.performRequest(url, "DELETE", nil)
 	if err != nil {
@@ -109,13 +109,13 @@ func (s *seleniumWebDriver) SessionStatus() (*SessionStatusResponse, error) {
 }
 
 func (s *seleniumWebDriver) SetSessionTimeout(to Timeout) (*SetSessionTimeoutResponse, error) {
-	var err error
-
-	url := fmt.Sprintf("%s/session/%s/timeouts", s.seleniumURL, s.sessionID)
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("SetSessionTimeout")
 	}
+
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/timeouts", s.seleniumURL, s.sessionID)
 
 	params := map[string]interface{}{
 		"type": to.Type(),

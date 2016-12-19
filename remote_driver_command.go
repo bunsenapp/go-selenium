@@ -76,12 +76,12 @@ type MaximizeWindowResponse struct {
 }
 
 func (s *seleniumWebDriver) WindowHandle() (*WindowHandleResponse, error) {
-	var response WindowHandleResponse
-	var err error
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("WindowHandle")
 	}
+
+	var response WindowHandleResponse
+	var err error
 
 	url := fmt.Sprintf("%s/session/%s/window", s.seleniumURL, s.sessionID)
 
@@ -104,12 +104,12 @@ func (s *seleniumWebDriver) WindowHandle() (*WindowHandleResponse, error) {
 }
 
 func (s *seleniumWebDriver) CloseWindow() (*CloseWindowResponse, error) {
-	var response CloseWindowResponse
-	var err error
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("CloseWindow")
 	}
+
+	var response CloseWindowResponse
+	var err error
 
 	url := fmt.Sprintf("%s/session/%s/window", s.seleniumURL, s.sessionID)
 
@@ -131,12 +131,12 @@ func (s *seleniumWebDriver) SwitchToWindow(handle string) (*SwitchToWindowRespon
 }
 
 func (s *seleniumWebDriver) WindowHandles() (*WindowHandlesResponse, error) {
-	var response WindowHandlesResponse
-	var err error
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("WindowHandles")
 	}
+
+	var response WindowHandlesResponse
+	var err error
 
 	url := fmt.Sprintf("%s/session/%s/window/handles", s.seleniumURL, s.sessionID)
 
@@ -154,14 +154,14 @@ func (s *seleniumWebDriver) WindowHandles() (*WindowHandlesResponse, error) {
 }
 
 func (s *seleniumWebDriver) SwitchToFrame(by By) (*SwitchToFrameResponse, error) {
-	var err error
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("SwitchToFrame")
 	}
 	if by == nil || (by.Type() != "index") {
 		return nil, newInvalidArgumentError("By was not of required type in SwitchToFrame", "by", "")
 	}
+
+	var err error
 
 	url := fmt.Sprintf("%s/session/%s/frame", s.seleniumURL, s.sessionID)
 
@@ -188,11 +188,11 @@ func (s *seleniumWebDriver) SwitchToFrame(by By) (*SwitchToFrameResponse, error)
 }
 
 func (s *seleniumWebDriver) SwitchToParentFrame() (*SwitchToParentFrameResponse, error) {
-	var err error
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("SwitchToParentFrame")
 	}
+
+	var err error
 
 	url := fmt.Sprintf("%s/session/%s/frame/parent", s.seleniumURL, s.sessionID)
 
@@ -210,12 +210,12 @@ func (s *seleniumWebDriver) SwitchToParentFrame() (*SwitchToParentFrameResponse,
 }
 
 func (s *seleniumWebDriver) WindowSize() (*WindowSizeResponse, error) {
-	var response WindowSizeResponse
-	var err error
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("WindowSize")
 	}
+
+	var response WindowSizeResponse
+	var err error
 
 	url := fmt.Sprintf("%s/session/%s/window/size", s.seleniumURL, s.sessionID)
 
@@ -233,13 +233,13 @@ func (s *seleniumWebDriver) WindowSize() (*WindowSizeResponse, error) {
 }
 
 func (s *seleniumWebDriver) SetWindowSize(dimension *Dimensions) (*SetWindowSizeResponse, error) {
-	var err error
-
 	if dimension == nil {
 		return nil, newInvalidArgumentError("Dimension was nil", "dimension", "")
 	} else if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("SetWindowSize")
 	}
+
+	var err error
 
 	url := fmt.Sprintf("%s/session/%s/window/size", s.seleniumURL, s.sessionID)
 
@@ -267,11 +267,11 @@ func (s *seleniumWebDriver) SetWindowSize(dimension *Dimensions) (*SetWindowSize
 }
 
 func (s *seleniumWebDriver) MaximizeWindow() (*MaximizeWindowResponse, error) {
-	var err error
-
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("MaximizeWindow")
 	}
+
+	var err error
 
 	url := fmt.Sprintf("%s/session/%s/window/maximize", s.seleniumURL, s.sessionID)
 

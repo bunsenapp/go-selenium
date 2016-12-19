@@ -3,19 +3,24 @@ package goselenium
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/pkg/errors"
 )
 
-type apiService interface {
+type apiServicer interface {
 	performRequest(string, string, io.Reader) ([]byte, error)
 }
 
 type requestError struct {
 	State string            `json:"state"`
 	Value requestErrorValue `json:"value"`
+}
+
+func (r *requestError) Error() string {
+	return fmt.Sprintf("Invalid status code returned, message: %v, information: %v", r.State, r.Value.Message)
 }
 
 type requestErrorValue struct {
@@ -33,12 +38,12 @@ func (a *seleniumAPIService) performRequest(url string, method string, body io.R
 	client := http.Client{}
 	resp, err := client.Do(request)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "An unexpected error occurred")
 	}
 
 	defer resp.Body.Close()
 
-	buf := new(bytes.Buffer)
+	var buf bytes.Buffer
 	buf.ReadFrom(resp.Body)
 	r := buf.Bytes()
 
@@ -48,11 +53,11 @@ func (a *seleniumAPIService) performRequest(url string, method string, body io.R
 
 		err := json.Unmarshal(r, &reqErr)
 		if err == nil {
-			errStr = fmt.Sprintf("Status code %v returned, message: %v, information: %v", resp.StatusCode, reqErr.State, reqErr.Value.Message)
+			return nil, &reqErr
 		} else {
 			errStr = fmt.Sprintf("Status code %v returned with no body", resp.StatusCode)
+			return nil, errors.New(errStr)
 		}
-		return nil, errors.New(errStr)
 	}
 
 	return r, nil

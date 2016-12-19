@@ -116,7 +116,7 @@ type seleniumWebDriver struct {
 	seleniumURL  string
 	sessionID    string
 	capabilities *Capabilities
-	apiService   apiService
+	apiService   apiServicer
 }
 
 func (s *seleniumWebDriver) DriverURL() string {
