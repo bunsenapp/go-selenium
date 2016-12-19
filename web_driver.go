@@ -138,6 +138,13 @@ type Element interface {
 
 	// Enabled gets whether or not the currently selected elemented is enabled.
 	Enabled() (*ElementEnabledResponse, error)
+
+	// Click clicks the currently selected element. Please note, you may have to
+	// implement your own wait to ensure the page actually navigates. This is due to
+	// Selenium having no idea whether or not your click will be interrupted by JS.
+	// Alternatively, you can use the WaitUntil(TitleEquals("title"), 20) to
+	// automatically wait until the page title has changed.
+	Click() (*ElementClickResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.

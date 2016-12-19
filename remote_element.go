@@ -66,6 +66,11 @@ type ElementEnabledResponse struct {
 	Enabled bool   `json:"value"`
 }
 
+// ElementClickResponse is the response returned from calling the Click method.
+type ElementClickResponse struct {
+	State string
+}
+
 type seleniumElement struct {
 	id string
 	wd *seleniumWebDriver
@@ -202,4 +207,22 @@ func (s *seleniumElement) Enabled() (*ElementEnabledResponse, error) {
 	}
 
 	return &response, nil
+}
+
+func (s *seleniumElement) Click() (*ElementClickResponse, error) {
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/element/%s/click", s.wd.seleniumURL, s.wd.sessionID, s.ID())
+
+	resp, err := s.wd.stateRequest(&request{
+		url:           url,
+		method:        "POST",
+		body:          nil,
+		callingMethod: "Click",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &ElementClickResponse{State: resp.State}, nil
 }
