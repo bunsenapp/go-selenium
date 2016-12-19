@@ -131,6 +131,10 @@ type Element interface {
 	// TagName gets the HTML element name (i.e. p, div) of the currently selected
 	// element.
 	TagName() (*ElementTagNameResponse, error)
+
+	// Rectangle gets the dimensions and co-ordinates of the currently selected
+	// element.
+	Rectangle() (*ElementRectangleResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.

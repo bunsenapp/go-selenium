@@ -281,3 +281,62 @@ func Test_ElementTagName_CorrectResponseIsReturned(t *testing.T) {
 		t.Errorf(correctResponseErrorText)
 	}
 }
+
+/*
+	RECTANGLE TESTS
+*/
+func Test_ElementRectangle_CommunicationErrorIsReturnedCorrectly(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: errors.New("An error :<"),
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	el := newSeleniumElement("0", d)
+	_, err := el.Rectangle()
+	if err == nil || !IsCommunicationError(err) {
+		t.Errorf(apiCommunicationErrorText)
+	}
+}
+
+func Test_ElementRectangle_UnmarshallingErrorIsReturnedCorrectly(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "Invalid JSON!",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	el := newSeleniumElement("0", d)
+	_, err := el.Rectangle()
+	if err == nil || !IsUnmarshallingError(err) {
+		t.Errorf(unmarshallingErrorText)
+	}
+}
+
+func Test_ElementRectangle_CorrectResponseIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn: `{
+			"state": "success",
+			"value": {
+				"x": 100,
+				"y": 200,
+				"width": 50,
+				"height": 50
+			}
+		}`,
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	el := newSeleniumElement("0", d)
+	resp, err := el.Rectangle()
+	if err != nil || resp.State != "success" || resp.Rectangle.X != 100 || resp.Rectangle.Height != 50 {
+		t.Errorf(correctResponseErrorText)
+	}
+}

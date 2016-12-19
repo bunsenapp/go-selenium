@@ -45,6 +45,21 @@ type ElementTagNameResponse struct {
 	Tag   string
 }
 
+// ElementRectangleResponse is the response returned from calling the Rectangle
+// method.
+type ElementRectangleResponse struct {
+	State     string
+	Rectangle Rectangle `json:"value"`
+}
+
+// Rectangle repsents an elements size and position on the page.
+type Rectangle struct {
+	Dimensions
+
+	X int `json:"x"`
+	Y int `json:"y"`
+}
+
 type seleniumElement struct {
 	id string
 	wd *seleniumWebDriver
@@ -143,4 +158,23 @@ func (s *seleniumElement) TagName() (*ElementTagNameResponse, error) {
 	}
 
 	return &ElementTagNameResponse{State: resp.State, Tag: resp.Value}, nil
+}
+
+func (s *seleniumElement) Rectangle() (*ElementRectangleResponse, error) {
+	var response ElementRectangleResponse
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/element/%s/rect", s.wd.seleniumURL, s.wd.sessionID, s.ID())
+
+	resp, err := s.wd.apiService.performRequest(url, "GET", nil)
+	if err != nil {
+		return nil, newCommunicationError(err, "Rectangle", url, nil)
+	}
+
+	err = json.Unmarshal(resp, &response)
+	if err != nil {
+		return nil, newUnmarshallingError(err, "Rectangle", string(resp))
+	}
+
+	return &response, nil
 }
