@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/bunsenapp/go-selenium/src"
+	"github.com/bunsenapp/go-selenium"
 )
 
 func Test_ElementAttribute_CanRetrieveAttributeCorrectly(t *testing.T) {

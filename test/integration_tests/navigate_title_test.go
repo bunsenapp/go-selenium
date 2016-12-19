@@ -12,13 +12,13 @@ func Test_NavigateTitle_TitleCanBeRetrievedSuccessfully(t *testing.T) {
 		errorAndWrap(t, "Error thrown whilst creating session.", err)
 	}
 
-	goResp, err := driver.Go("https://bbc.co.uk")
+	goResp, err := driver.Go("https://google.com")
 	if err != nil || goResp.State != "success" {
 		errorAndWrap(t, "Error was thrown whilst navigating or result was not a success.", err)
 	}
 
 	titleResponse, err := driver.Title()
-	if err != nil || titleResponse.Title != "BBC - Home" {
+	if err != nil || titleResponse.Title != "Google" {
 		errorAndWrap(t, "Error was thrown or URL was not what it should have been.", err)
 	}
 

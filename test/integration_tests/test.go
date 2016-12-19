@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	goselenium "github.com/bunsenapp/go-selenium/src"
+	"github.com/bunsenapp/go-selenium"
 	"github.com/pkg/errors"
 )
 

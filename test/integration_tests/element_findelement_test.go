@@ -3,7 +3,7 @@ package integrationtests
 import (
 	"testing"
 
-	"github.com/bunsenapp/go-selenium/src"
+	"github.com/bunsenapp/go-selenium"
 )
 
 func Test_ElementFindElement_CanFindElementByCSSSelector(t *testing.T) {

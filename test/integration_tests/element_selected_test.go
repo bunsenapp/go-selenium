@@ -3,7 +3,7 @@ package integrationtests
 import (
 	"testing"
 
-	"github.com/bunsenapp/go-selenium/src"
+	"github.com/bunsenapp/go-selenium"
 )
 
 func Test_ElementSelected_CheckedElementReturnsCorrectly(t *testing.T) {
