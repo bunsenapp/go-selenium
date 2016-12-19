@@ -39,6 +39,12 @@ type ElementTextResponse struct {
 	Text  string
 }
 
+// ElementTagNameResponse is the response returned from calling the TagName method.
+type ElementTagNameResponse struct {
+	State string
+	Tag   string
+}
+
 type seleniumElement struct {
 	id string
 	wd *seleniumWebDriver
@@ -119,4 +125,22 @@ func (s *seleniumElement) Text() (*ElementTextResponse, error) {
 	}
 
 	return &ElementTextResponse{State: resp.State, Text: resp.Value}, nil
+}
+
+func (s *seleniumElement) TagName() (*ElementTagNameResponse, error) {
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/element/%s/name", s.wd.seleniumURL, s.wd.sessionID, s.ID())
+
+	resp, err := s.wd.valueRequest(&request{
+		url:           url,
+		method:        "GET",
+		body:          nil,
+		callingMethod: "TagName",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &ElementTagNameResponse{State: resp.State, Tag: resp.Value}, nil
 }

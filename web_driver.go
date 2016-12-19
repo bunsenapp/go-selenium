@@ -127,6 +127,10 @@ type Element interface {
 
 	// Text gets the value of element.innerText for the current element.
 	Text() (*ElementTextResponse, error)
+
+	// TagName gets the HTML element name (i.e. p, div) of the currently selected
+	// element.
+	TagName() (*ElementTagNameResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.
