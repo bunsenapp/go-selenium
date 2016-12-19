@@ -1,5 +1,54 @@
 package goselenium
 
+const (
+	UnidentifiedKey   = string('\uE000')
+	CancelKey         = string('\uE001')
+	HelpKey           = string('\uE002')
+	BackspaceKey      = string('\uE003')
+	TabKey            = string('\uE004')
+	ClearKey          = string('\uE005')
+	ReturnKey         = string('\uE006')
+	EnterKey          = string('\uE007')
+	ShiftKey          = string('\uE008')
+	ControlKey        = string('\uE009')
+	AltKey            = string('\uE00A')
+	PauseKey          = string('\uE00B')
+	EscapeKey         = string('\uE00C')
+	SpaceKey          = string('\uE00D')
+	PageUpKey         = string('\uE00E')
+	PageDownKey       = string('\uE00F')
+	EndKey            = string('\uE010')
+	HomeKey           = string('\uE011')
+	ArrowLeftKey      = string('\uE012')
+	ArrowUpKey        = string('\uE013')
+	ArrowRightKey     = string('\uE014')
+	ArrowDownKey      = string('\uE015')
+	InsertKey         = string('\uE016')
+	DeleteKey         = string('\uE017')
+	SemiColonKey      = string('\uE018')
+	EqualsKey         = string('\uE019')
+	AsteriskKey       = string('\uE024')
+	PlusKey           = string('\uE025')
+	CommaKey          = string('\uE026')
+	MinusKey          = string('\uE027')
+	PeriodKey         = string('\uE028')
+	ForwardSlashKey   = string('\uE029')
+	F1Key             = string('\uE031')
+	F2Key             = string('\uE032')
+	F3Key             = string('\uE033')
+	F4Key             = string('\uE034')
+	F5Key             = string('\uE035')
+	F6Key             = string('\uE036')
+	F7Key             = string('\uE037')
+	F8Key             = string('\uE038')
+	F9Key             = string('\uE039')
+	F10Key            = string('\uE03A')
+	F11Key            = string('\uE03B')
+	F12Key            = string('\uE03C')
+	MetaKey           = string('\uE03D')
+	ZenkakuHankakuKey = string('\uE040')
+)
+
 // WebDriver is an interface which adheres to the W3C specification
 // for WebDrivers (https://w3c.github.io/webdriver/webdriver-spec.html).
 type WebDriver interface {
@@ -148,6 +197,9 @@ type Element interface {
 
 	// Clear clears the currently selected element according to the specification.
 	Clear() (*ElementClearResponse, error)
+
+	// SendKeys sends a set of keystrokes to the currently selected element.
+	SendKeys(keys string) (*ElementSendKeysResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.

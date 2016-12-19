@@ -1,6 +1,7 @@
 package goselenium
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -73,6 +74,11 @@ type ElementClickResponse struct {
 
 // ElementClearResponse is the response returned from calling the Clear method.
 type ElementClearResponse struct {
+	State string
+}
+
+// ElementSendKeysResponse is the response returned from calling the SendKeys method.
+type ElementSendKeysResponse struct {
 	State string
 }
 
@@ -248,4 +254,35 @@ func (s *seleniumElement) Clear() (*ElementClearResponse, error) {
 	}
 
 	return &ElementClearResponse{State: resp.State}, nil
+}
+
+func (s *seleniumElement) SendKeys(keys string) (*ElementSendKeysResponse, error) {
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/element/%s/value", s.wd.seleniumURL, s.wd.sessionID, s.ID())
+
+	keyChars := make([]string, len(keys))
+	for i, k := range keys {
+		keyChars[i] = string(k)
+	}
+	dict := map[string][]string{
+		"value": keyChars,
+	}
+	body, err := json.Marshal(dict)
+	if err != nil {
+		return nil, newMarshallingError(err, "SendKeys", dict)
+	}
+
+	reader := bytes.NewReader(body)
+	resp, err := s.wd.stateRequest(&request{
+		url:           url,
+		method:        "POST",
+		body:          reader,
+		callingMethod: "SendKeys",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &ElementSendKeysResponse{State: resp.State}, nil
 }

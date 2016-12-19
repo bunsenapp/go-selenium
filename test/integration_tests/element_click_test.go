@@ -50,7 +50,7 @@ func Test_ElementClick_ClickSuccessfullyNavigates(t *testing.T) {
 		}
 
 		// TODO: Unfortunate Selenium flaw - will need the helpers to get around
-		// an explicit wait.
+		// an explicit wait. Also occurs in Python library.
 		time.Sleep(1 * time.Second)
 
 		resp, err := driver.Title()
