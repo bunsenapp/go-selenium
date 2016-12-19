@@ -71,6 +71,11 @@ type ElementClickResponse struct {
 	State string
 }
 
+// ElementClearResponse is the response returned from calling the Clear method.
+type ElementClearResponse struct {
+	State string
+}
+
 type seleniumElement struct {
 	id string
 	wd *seleniumWebDriver
@@ -225,4 +230,22 @@ func (s *seleniumElement) Click() (*ElementClickResponse, error) {
 	}
 
 	return &ElementClickResponse{State: resp.State}, nil
+}
+
+func (s *seleniumElement) Clear() (*ElementClearResponse, error) {
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/element/%s/clear", s.wd.seleniumURL, s.wd.sessionID, s.ID())
+
+	resp, err := s.wd.stateRequest(&request{
+		url:           url,
+		method:        "POST",
+		body:          nil,
+		callingMethod: "Clear",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &ElementClearResponse{State: resp.State}, nil
 }

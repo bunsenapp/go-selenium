@@ -446,3 +446,56 @@ func Test_ElementClick_CorrectResponseIsReturned(t *testing.T) {
 		t.Errorf(correctResponseErrorText)
 	}
 }
+
+/*
+	CLEAR TESTS
+*/
+func Test_ElementClear_CommunicationErrorIsReturnedCorrectly(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: errors.New("An error :<"),
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	el := newSeleniumElement("0", d)
+	_, err := el.Clear()
+	if err == nil || !IsCommunicationError(err) {
+		t.Errorf(apiCommunicationErrorText)
+	}
+}
+
+func Test_ElementClear_UnmarshallingErrorIsReturnedCorrectly(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "Invalid JSON!",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	el := newSeleniumElement("0", d)
+	_, err := el.Clear()
+	if err == nil || !IsUnmarshallingError(err) {
+		t.Errorf(unmarshallingErrorText)
+	}
+}
+
+func Test_ElementClear_CorrectResponseIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn: `{
+			"state": "success"
+		}`,
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	el := newSeleniumElement("0", d)
+	resp, err := el.Clear()
+	if err != nil || resp.State != "success" {
+		t.Errorf(correctResponseErrorText)
+	}
+}

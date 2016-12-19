@@ -136,7 +136,7 @@ type Element interface {
 	// element.
 	Rectangle() (*ElementRectangleResponse, error)
 
-	// Enabled gets whether or not the currently selected elemented is enabled.
+	// Enabled gets whether or not the current selected elemented is enabled.
 	Enabled() (*ElementEnabledResponse, error)
 
 	// Click clicks the currently selected element. Please note, you may have to
@@ -145,6 +145,9 @@ type Element interface {
 	// Alternatively, you can use the WaitUntil(TitleEquals("title"), 20) to
 	// automatically wait until the page title has changed.
 	Click() (*ElementClickResponse, error)
+
+	// Clear clears the currently selected element according to the specification.
+	Clear() (*ElementClearResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.
