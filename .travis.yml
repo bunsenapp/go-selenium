@@ -1,4 +1,4 @@
 language: go
 go:
     - 1.x
-script: go test ./src/* -v
+script: go test ./* -v
