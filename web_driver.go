@@ -186,6 +186,14 @@ type WebDriver interface {
 	//		doLongWindedTask();
 	//		callback();
 	ExecuteScriptAsync(script string) (*ExecuteScriptResponse, error)
+
+	/*
+		COOKIE METHODS
+	*/
+
+	// AllCookies returns all cookies associated with the active URL of the
+	// current browsing context.
+	AllCookies() (*AllCookiesResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
