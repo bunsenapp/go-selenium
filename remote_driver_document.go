@@ -47,3 +47,13 @@ func (s *seleniumWebDriver) ExecuteScript(script string) (*ExecuteScriptResponse
 
 	return s.scriptRequest(script, url, "ExecuteScript")
 }
+
+func (s *seleniumWebDriver) ExecuteScriptAsync(script string) (*ExecuteScriptResponse, error) {
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("ExecuteScriptAsync")
+	}
+
+	url := fmt.Sprintf("%s/session/%s/execute_async", s.seleniumURL, s.sessionID)
+
+	return s.scriptRequest(script, url, "ExecuteScriptAsync")
+}

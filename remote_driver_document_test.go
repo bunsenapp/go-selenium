@@ -134,3 +134,68 @@ func Test_CommandExecuteScript_ResultIsReturnedSuccessfully(t *testing.T) {
 		t.Errorf(correctResponseErrorText)
 	}
 }
+
+/*
+	ExecuteScriptAsync tests
+*/
+func Test_CommandExecuteScriptAsync_InvalidSessionIDResultsInError(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+
+	_, err := d.ExecuteScriptAsync("alert('test');")
+	if err == nil || !IsSessionIDError(err) {
+		t.Errorf(sessionIDErrorText)
+	}
+}
+
+func Test_CommandExecuteScriptAsync_CommunicationErrorIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: errors.New("An error"),
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	_, err := d.ExecuteScriptAsync("alert('test');")
+	if err == nil || !IsCommunicationError(err) {
+		t.Errorf(apiCommunicationErrorText)
+	}
+}
+
+func Test_CommandExecuteScriptAsync_UnmarshallingErrorIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "Invalid JSON",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	_, err := d.ExecuteScriptAsync("alert('test');")
+	if err == nil || !IsUnmarshallingError(err) {
+		t.Errorf(unmarshallingErrorText)
+	}
+}
+
+func Test_CommandExecuteScriptAsync_ResultIsReturnedSuccessfully(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn: `{
+			"state": "success",
+			"value": "test"
+		}`,
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	resp, err := d.ExecuteScriptAsync("alert('test');")
+	if err != nil || resp.State != "success" {
+		t.Errorf(correctResponseErrorText)
+	}
+}

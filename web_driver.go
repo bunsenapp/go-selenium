@@ -164,6 +164,28 @@ type WebDriver interface {
 	// ExecuteScript executes a Javascript script on the currently active
 	// page.
 	ExecuteScript(script string) (*ExecuteScriptResponse, error)
+
+	// ExecuteScriptAsync executes a Javascript script asynchronously on the
+	// currently active page. If you do not have experience with this call,
+	// there is an example below.
+	//
+	// The async handler runs on the concept of a callback; meaning it will run
+	// your code asynchronously and if it completes, will call the callback.
+	//
+	// Selenium helpfully provides a callback function which is passed in
+	// to the 'arguments' array that you can access within your script. The
+	// callback function is always the LAST element of the array. You can
+	// access it like the below:
+	//		var callback = arguments[arguments.length - 1];
+	// The callback function also accepts one argument as a parameter, this
+	// can be anything and will be assigned to the Response property of
+	// ExecuteScriptResponse.
+	//
+	// An example:
+	//		var callback = arguments[arguments.length - 1];
+	//		doLongWindedTask();
+	//		callback();
+	ExecuteScriptAsync(script string) (*ExecuteScriptResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
