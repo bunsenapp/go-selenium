@@ -30,7 +30,7 @@ func Test_ElementFindElement_InvalidSessionIdResultsInError(t *testing.T) {
 
 	d := setUpDriver(setUpDefaultCaps(), api)
 
-	_, err := d.FindElement(ByIndex(32))
+	_, err := d.FindElement(ByCSSSelector("test"))
 	if err == nil || !IsSessionIDError(err) {
 		t.Errorf(sessionIDErrorText)
 	}
@@ -111,7 +111,7 @@ func Test_ElementFindElements_InvalidSessionIdResultsInError(t *testing.T) {
 
 	d := setUpDriver(setUpDefaultCaps(), api)
 
-	_, err := d.FindElements(ByIndex(32))
+	_, err := d.FindElements(ByCSSSelector("test"))
 	if err == nil || !IsSessionIDError(err) {
 		t.Errorf(sessionIDErrorText)
 	}

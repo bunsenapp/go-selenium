@@ -84,7 +84,7 @@ func IsMarshallingError(err error) bool {
 // IsSessionIDError checks whether an error is due to a session ID not being
 // set.
 func IsSessionIDError(err error) bool {
-	_, ok := err.(SessionIDError)
+	_, ok := err.(*sessionIDError)
 	return ok
 }
 

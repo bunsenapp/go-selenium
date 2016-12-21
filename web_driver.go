@@ -150,9 +150,16 @@ type WebDriver interface {
 	// being thrown.
 	FindElement(by By) (Element, error)
 
-	// FindElements works the sameway as FindElement but can return more than
+	// FindElements works the same way as FindElement but can return more than
 	// one result.
 	FindElements(by By) ([]Element, error)
+
+	/*
+		DOCUMENT HANDLING METHODS
+	*/
+
+	// PageSource retrieves the outerHTML value of the current URL.
+	PageSource() (*PageSourceResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
