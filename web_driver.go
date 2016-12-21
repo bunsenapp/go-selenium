@@ -160,6 +160,10 @@ type WebDriver interface {
 
 	// PageSource retrieves the outerHTML value of the current URL.
 	PageSource() (*PageSourceResponse, error)
+
+	// ExecuteScript executes a Javascript script on the currently active
+	// page.
+	ExecuteScript(script string) (*ExecuteScriptResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements

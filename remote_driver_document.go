@@ -9,6 +9,13 @@ type PageSourceResponse struct {
 	Source string
 }
 
+// ExecuteScriptResponse is the response returned from calling the ExecuteScript
+// method.
+type ExecuteScriptResponse struct {
+	State    string
+	Response string
+}
+
 func (s *seleniumWebDriver) PageSource() (*PageSourceResponse, error) {
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("PageSource")
@@ -29,4 +36,14 @@ func (s *seleniumWebDriver) PageSource() (*PageSourceResponse, error) {
 	}
 
 	return &PageSourceResponse{State: resp.State, Source: resp.Value}, nil
+}
+
+func (s *seleniumWebDriver) ExecuteScript(script string) (*ExecuteScriptResponse, error) {
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("ExecuteScript")
+	}
+
+	url := fmt.Sprintf("%s/session/%s/execute", s.seleniumURL, s.sessionID)
+
+	return s.scriptRequest(script, url, "ExecuteScript")
 }

@@ -176,6 +176,29 @@ func (s *seleniumWebDriver) elementRequest(req *elRequest) ([]byte, error) {
 	return resp, nil
 }
 
+func (s *seleniumWebDriver) scriptRequest(script string, url string, method string) (*ExecuteScriptResponse, error) {
+	r := map[string]interface{}{
+		"script": script,
+		"args":   []string{""},
+	}
+	b, err := json.Marshal(r)
+	if err != nil {
+		return nil, newMarshallingError(err, method, r)
+	}
+	body := bytes.NewReader(b)
+	resp, err := s.valueRequest(&request{
+		url:           url,
+		method:        "POST",
+		body:          body,
+		callingMethod: method,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &ExecuteScriptResponse{State: resp.State, Response: resp.Value}, nil
+}
+
 type timeout struct {
 	timeoutType string
 	timeout     int
