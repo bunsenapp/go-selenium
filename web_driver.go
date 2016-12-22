@@ -194,6 +194,10 @@ type WebDriver interface {
 	// AllCookies returns all cookies associated with the active URL of the
 	// current browsing context.
 	AllCookies() (*AllCookiesResponse, error)
+
+	// Cookie gets a single named cookie associated with the active URL of the
+	// current browsing context.
+	Cookie(name string) (*CookieResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements

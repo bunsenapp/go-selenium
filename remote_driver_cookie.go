@@ -11,6 +11,12 @@ type AllCookiesResponse struct {
 	Cookies []Cookie `json:"value"`
 }
 
+// CookieResponse is the response returned from the Cookie method.
+type CookieResponse struct {
+	State  string `json:"state"`
+	Cookie Cookie `json:"value"`
+}
+
 // Cookie represents a browser cookie.
 type Cookie struct {
 	Name       string `json:"name"`
@@ -28,6 +34,7 @@ func (s *seleniumWebDriver) AllCookies() (*AllCookiesResponse, error) {
 
 	var response AllCookiesResponse
 	var err error
+
 	url := fmt.Sprintf("%s/session/%s/cookie", s.seleniumURL, s.sessionID)
 
 	resp, err := s.apiService.performRequest(url, "GET", nil)
@@ -38,6 +45,29 @@ func (s *seleniumWebDriver) AllCookies() (*AllCookiesResponse, error) {
 	err = json.Unmarshal(resp, &response)
 	if err != nil {
 		return nil, newUnmarshallingError(err, "AllCookies", string(resp))
+	}
+
+	return &response, nil
+}
+
+func (s *seleniumWebDriver) Cookie(name string) (*CookieResponse, error) {
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("Cookie")
+	}
+
+	var response CookieResponse
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/cookie/%s", s.seleniumURL, s.sessionID, name)
+
+	resp, err := s.apiService.performRequest(url, "GET", nil)
+	if err != nil {
+		return nil, newCommunicationError(err, "Cookie", url, nil)
+	}
+
+	err = json.Unmarshal(resp, &response)
+	if err != nil {
+		return nil, newUnmarshallingError(err, "Cookie", string(resp))
 	}
 
 	return &response, nil
