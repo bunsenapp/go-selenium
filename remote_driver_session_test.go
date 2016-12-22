@@ -10,11 +10,8 @@ import (
 */
 func Test_CreateSession_FailedAPIRequestResultsInAnErrorBeingReturned(t *testing.T) {
 	api := &testableAPIService{
-		jsonToReturn: "",
-		errorToReturn: &communicationError{
-			url: "hello",
-			err: errors.New("Call failed! :<"),
-		},
+		jsonToReturn:  "",
+		errorToReturn: errors.New("An error :<"),
 	}
 
 	d := setUpDriver(setUpDefaultCaps(), api)

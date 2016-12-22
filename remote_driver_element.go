@@ -2,6 +2,7 @@ package goselenium
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -19,7 +20,7 @@ type element struct {
 
 func (s *seleniumWebDriver) FindElement(by By) (Element, error) {
 	if by.Type() == "index" {
-		return nil, newInvalidArgumentError("Cannot find by index", "by", "index")
+		return nil, errors.New("findelement: invalid by argument")
 	}
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("FindElement")
@@ -51,7 +52,7 @@ func (s *seleniumWebDriver) FindElement(by By) (Element, error) {
 
 func (s *seleniumWebDriver) FindElements(by By) ([]Element, error) {
 	if by.Type() == "index" {
-		return nil, newInvalidArgumentError("Cannot find by index", "by", "index")
+		return nil, errors.New("findelements: invalid by argument")
 	}
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("FindElements")

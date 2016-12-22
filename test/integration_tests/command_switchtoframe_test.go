@@ -45,7 +45,7 @@ func Test_CommandSwitchToFrame_InvalidByResultsInAnError(t *testing.T) {
 	}
 
 	resp, err := driver.SwitchToFrame(goselenium.ByCSSSelector("iframe"))
-	if err == nil || !goselenium.IsInvalidArgumentError(err) {
+	if err == nil {
 		errorAndWrap(t, "Error was not thrown or was not the expected type.", err)
 	}
 

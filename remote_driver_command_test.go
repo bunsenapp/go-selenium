@@ -231,7 +231,7 @@ func Test_CommandSwitchToFrame_InvalidByResultsInError(t *testing.T) {
 
 	for _, i := range invalidBys {
 		_, err := d.SwitchToFrame(i)
-		if err == nil || !IsInvalidArgumentError(err) {
+		if err == nil {
 			t.Errorf(argumentErrorText)
 		}
 	}
@@ -412,7 +412,7 @@ func Test_CommandSetWindowSize_NullDimensionResultsInError(t *testing.T) {
 	d := setUpDriver(setUpDefaultCaps(), api)
 
 	_, err := d.SetWindowSize(nil)
-	if err == nil || !IsInvalidArgumentError(err) {
+	if err == nil {
 		t.Errorf(argumentErrorText)
 	}
 }

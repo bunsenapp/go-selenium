@@ -3,6 +3,7 @@ package goselenium
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -158,7 +159,7 @@ func (s *seleniumWebDriver) SwitchToFrame(by By) (*SwitchToFrameResponse, error)
 		return nil, newSessionIDError("SwitchToFrame")
 	}
 	if by == nil || (by.Type() != "index") {
-		return nil, newInvalidArgumentError("By was not of required type in SwitchToFrame", "by", "")
+		return nil, errors.New("switchtoframe: invalid by argument")
 	}
 
 	var err error
@@ -234,7 +235,7 @@ func (s *seleniumWebDriver) WindowSize() (*WindowSizeResponse, error) {
 
 func (s *seleniumWebDriver) SetWindowSize(dimension *Dimensions) (*SetWindowSizeResponse, error) {
 	if dimension == nil {
-		return nil, newInvalidArgumentError("Dimension was nil", "dimension", "")
+		return nil, errors.New("setwindowsize: invalid dimension argument")
 	} else if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("SetWindowSize")
 	}

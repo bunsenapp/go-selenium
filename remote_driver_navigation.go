@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // GoResponse is the response returned from the selenium web driver when calling
@@ -57,7 +55,7 @@ func (s *seleniumWebDriver) Go(goURL string) (*GoResponse, error) {
 	invalidURL := goURL == ""
 	validProtocol := strings.HasPrefix(goURL, "https://") || strings.HasPrefix(goURL, "http://")
 	if invalidURL || !validProtocol {
-		return nil, newInvalidURLError(errors.New("Invalid URL in Go"), goURL)
+		return nil, newInvalidURLError(goURL)
 	}
 
 	params := map[string]string{

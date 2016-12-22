@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/pkg/errors"
+	"errors"
 )
 
 type apiServicer interface {
@@ -19,7 +19,7 @@ type requestError struct {
 	Value requestErrorValue `json:"value"`
 }
 
-func (r *requestError) Error() string {
+func (r requestError) Error() string {
 	return fmt.Sprintf("Invalid status code returned, message: %v, information: %v", r.State, r.Value.Message)
 }
 
@@ -29,7 +29,7 @@ type requestErrorValue struct {
 
 type seleniumAPIService struct{}
 
-func (a *seleniumAPIService) performRequest(url string, method string, body io.Reader) ([]byte, error) {
+func (a seleniumAPIService) performRequest(url string, method string, body io.Reader) ([]byte, error) {
 	request, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (a *seleniumAPIService) performRequest(url string, method string, body io.R
 	client := http.Client{}
 	resp, err := client.Do(request)
 	if err != nil {
-		return nil, errors.Wrap(err, "An unexpected error occurred")
+		return nil, errors.New(fmt.Sprintf("%s: an unexpected communication failure occurred, error: %s", method, err.Error()))
 	}
 
 	defer resp.Body.Close()

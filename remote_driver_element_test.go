@@ -17,7 +17,7 @@ func Test_ElementFindElement_ByIndexResultsInError(t *testing.T) {
 	d := setUpDriver(setUpDefaultCaps(), api)
 
 	_, err := d.FindElement(ByIndex(32))
-	if err == nil || !IsInvalidArgumentError(err) {
+	if err == nil {
 		t.Errorf(sessionIDErrorText)
 	}
 }
@@ -98,7 +98,7 @@ func Test_ElementFindElements_ByIndexResultsInError(t *testing.T) {
 	d := setUpDriver(setUpDefaultCaps(), api)
 
 	_, err := d.FindElements(ByIndex(32))
-	if err == nil || !IsInvalidArgumentError(err) {
+	if err == nil {
 		t.Errorf(sessionIDErrorText)
 	}
 }

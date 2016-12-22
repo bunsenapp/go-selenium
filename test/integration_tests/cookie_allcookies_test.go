@@ -9,7 +9,7 @@ func Test_CookieAllCookies_CanRetrieveAllCookiesFromWebPage(t *testing.T) {
 	driver := createDriver(t)
 	_, err := driver.CreateSession()
 	if err != nil {
-		errorAndWrap(t, "Error thrown whilst creating session.", err)
+		errorAndWrap(t, "Error thrown whilst trying to create session.", err)
 	}
 
 	_, err = driver.Go("https://news.ycombinator.com")

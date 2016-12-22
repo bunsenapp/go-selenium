@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/pkg/errors"
+	"errors"
 )
 
 // NewSeleniumWebDriver creates a new instance of a Selenium web driver with a
@@ -45,7 +45,7 @@ func NewSeleniumWebDriver(serviceURL string, capabilities Capabilities) (WebDriv
 // SessionScriptTimeout creates an appropriate Timeout implementation for the
 // script timeout.
 func SessionScriptTimeout(to int) Timeout {
-	return &timeout{
+	return timeout{
 		timeoutType: "script",
 		timeout:     to,
 	}
@@ -54,7 +54,7 @@ func SessionScriptTimeout(to int) Timeout {
 // SessionPageLoadTimeout creates an appropriate Timeout implementation for the
 // page load timeout.
 func SessionPageLoadTimeout(to int) Timeout {
-	return &timeout{
+	return timeout{
 		timeoutType: "page load",
 		timeout:     to,
 	}
@@ -63,7 +63,7 @@ func SessionPageLoadTimeout(to int) Timeout {
 // SessionImplicitWaitTimeout creates an appropriate timeout implementation for the
 // session implicit wait timeout.
 func SessionImplicitWaitTimeout(to int) Timeout {
-	return &timeout{
+	return timeout{
 		timeoutType: "implicit",
 		timeout:     to,
 	}
@@ -72,7 +72,7 @@ func SessionImplicitWaitTimeout(to int) Timeout {
 // ByIndex accepts an integer that represents what the index of an element is
 // and returns the appropriate By implementation.
 func ByIndex(index uint) By {
-	return &by{
+	return by{
 		t:     "index",
 		value: index,
 	}
@@ -81,7 +81,7 @@ func ByIndex(index uint) By {
 // ByCSSSelector accepts a CSS selector (i.e. ul#id > a) for use in the
 // FindElement(s) functions.
 func ByCSSSelector(selector string) By {
-	return &by{
+	return by{
 		t:     "css selector",
 		value: selector,
 	}
@@ -89,7 +89,7 @@ func ByCSSSelector(selector string) By {
 
 // ByLinkText is used to find an anchor element by its innerText.
 func ByLinkText(text string) By {
-	return &by{
+	return by{
 		t:     "link text",
 		value: text,
 	}
@@ -98,7 +98,7 @@ func ByLinkText(text string) By {
 // ByPartialLinkText works the same way as ByLinkText but performs a search
 // where the link text contains the string passed in instead of a full match.
 func ByPartialLinkText(text string) By {
-	return &by{
+	return by{
 		t:     "partial link text",
 		value: text,
 	}
@@ -106,7 +106,7 @@ func ByPartialLinkText(text string) By {
 
 // ByXPath utilises the xpath to find elements (see http://www.guru99.com/xpath-selenium.html).
 func ByXPath(path string) By {
-	return &by{
+	return by{
 		t:     "xpath",
 		value: path,
 	}
@@ -204,11 +204,11 @@ type timeout struct {
 	timeout     int
 }
 
-func (t *timeout) Type() string {
+func (t timeout) Type() string {
 	return t.timeoutType
 }
 
-func (t *timeout) Timeout() int {
+func (t timeout) Timeout() int {
 	return t.timeout
 }
 
@@ -240,10 +240,10 @@ type by struct {
 	value interface{}
 }
 
-func (b *by) Type() string {
+func (b by) Type() string {
 	return b.t
 }
 
-func (b *by) Value() interface{} {
+func (b by) Value() interface{} {
 	return b.value
 }

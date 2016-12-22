@@ -12,18 +12,18 @@ type browser struct {
 }
 
 // BrowserName returns the browser name assigned to the current browser object.
-func (b *browser) BrowserName() string {
+func (b browser) BrowserName() string {
 	return b.browserName
 }
 
 // FirefoxBrowser returns a Firefox browser object.
 func FirefoxBrowser() Browser {
-	return &browser{"firefox"}
+	return browser{"firefox"}
 }
 
 // ChromeBrowser returns a Chrome browser object.
 func ChromeBrowser() Browser {
-	return &browser{"chrome"}
+	return browser{"chrome"}
 }
 
 // Capabilities represents the capabilities defined in the W3C specification.
@@ -40,7 +40,7 @@ func (c *Capabilities) Browser() Browser {
 		return c.browser
 	}
 
-	return &browser{}
+	return browser{}
 }
 
 // SetBrowser sets the browser capability to be one of the allowed browsers.
