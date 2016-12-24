@@ -1,6 +1,7 @@
 package goselenium
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,6 +26,11 @@ type Cookie struct {
 	Domain     string `json:"domain"`
 	SecureOnly bool   `json:"secure"`
 	HTTPOnly   bool   `json:"httpOnly"`
+}
+
+// AddCookieResponse is the result returned from calling the AddCookie method.
+type AddCookieResponse struct {
+	State string
 }
 
 func (s *seleniumWebDriver) AllCookies() (*AllCookiesResponse, error) {
@@ -71,4 +77,34 @@ func (s *seleniumWebDriver) Cookie(name string) (*CookieResponse, error) {
 	}
 
 	return &response, nil
+}
+
+func (s *seleniumWebDriver) AddCookie(c *Cookie) (*AddCookieResponse, error) {
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("AddCookie")
+	}
+
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/cookie", s.seleniumURL, s.sessionID)
+
+	j := map[string]Cookie{
+		"cookie": *c,
+	}
+	b, err := json.Marshal(j)
+	if err != nil {
+		return nil, newMarshallingError(err, "AddCookie", c)
+	}
+	body := bytes.NewReader(b)
+	resp, err := s.stateRequest(&request{
+		url:           url,
+		body:          body,
+		method:        "POST",
+		callingMethod: "AddCookie",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &AddCookieResponse{State: resp.State}, nil
 }

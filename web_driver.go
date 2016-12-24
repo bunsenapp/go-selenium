@@ -198,6 +198,9 @@ type WebDriver interface {
 	// Cookie gets a single named cookie associated with the active URL of the
 	// current browsing context.
 	Cookie(name string) (*CookieResponse, error)
+
+	// AddCookie adds a cookie to the current browsing context.
+	AddCookie(c *Cookie) (*AddCookieResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
