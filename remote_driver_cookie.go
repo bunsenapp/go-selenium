@@ -33,6 +33,12 @@ type AddCookieResponse struct {
 	State string
 }
 
+// DeleteCookieResponse is the result returned from calling the DeleteCookie
+// method.
+type DeleteCookieResponse struct {
+	State string
+}
+
 func (s *seleniumWebDriver) AllCookies() (*AllCookiesResponse, error) {
 	if len(s.sessionID) == 0 {
 		return nil, newSessionIDError("AllCookies")
@@ -95,6 +101,7 @@ func (s *seleniumWebDriver) AddCookie(c *Cookie) (*AddCookieResponse, error) {
 	if err != nil {
 		return nil, newMarshallingError(err, "AddCookie", c)
 	}
+
 	body := bytes.NewReader(b)
 	resp, err := s.stateRequest(&request{
 		url:           url,
@@ -107,4 +114,26 @@ func (s *seleniumWebDriver) AddCookie(c *Cookie) (*AddCookieResponse, error) {
 	}
 
 	return &AddCookieResponse{State: resp.State}, nil
+}
+
+func (s *seleniumWebDriver) DeleteCookie(name string) (*DeleteCookieResponse, error) {
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("DeleteCookie")
+	}
+
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/cookie/%s", s.seleniumURL, s.sessionID, name)
+
+	resp, err := s.stateRequest(&request{
+		url:           url,
+		body:          nil,
+		method:        "DELETE",
+		callingMethod: "DeleteCookie",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &DeleteCookieResponse{State: resp.State}, nil
 }

@@ -201,6 +201,11 @@ type WebDriver interface {
 
 	// AddCookie adds a cookie to the current browsing context.
 	AddCookie(c *Cookie) (*AddCookieResponse, error)
+
+	// DeleteCookie deletes a cookie from the current browsing session. If name
+	// is passed as an empty string, all cookies for the current address will
+	// be deleted.
+	DeleteCookie(name string) (*DeleteCookieResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
