@@ -1,6 +1,10 @@
 package goselenium
 
-import "fmt"
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+)
 
 // DismissAlertResponse is the response returned from calling the DismissAlert
 // method.
@@ -19,6 +23,12 @@ type AcceptAlertResponse struct {
 type AlertTextResponse struct {
 	State string
 	Text  string
+}
+
+// SendAlertTextResponse is the response returned from calling the
+// SendAlertText method.
+type SendAlertTextResponse struct {
+	State string
 }
 
 func (s *seleniumWebDriver) DismissAlert() (*DismissAlertResponse, error) {
@@ -85,4 +95,35 @@ func (s *seleniumWebDriver) AlertText() (*AlertTextResponse, error) {
 	}
 
 	return &AlertTextResponse{State: resp.State, Text: resp.Value}, nil
+}
+
+func (s *seleniumWebDriver) SendAlertText(text string) (*SendAlertTextResponse, error) {
+	if len(s.sessionID) == 0 {
+		return nil, newSessionIDError("SendAlertText")
+	}
+
+	var err error
+
+	url := fmt.Sprintf("%s/session/%s/alert/text", s.seleniumURL, s.sessionID)
+
+	b := map[string]string{
+		"text": text,
+	}
+	json, err := json.Marshal(b)
+	if err != nil {
+		return nil, newMarshallingError(err, "SendAlertText", b)
+	}
+
+	body := bytes.NewReader(json)
+	resp, err := s.valueRequest(&request{
+		url:           url,
+		method:        "POST",
+		body:          body,
+		callingMethod: "SendAlertText",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &SendAlertTextResponse{State: resp.State}, nil
 }

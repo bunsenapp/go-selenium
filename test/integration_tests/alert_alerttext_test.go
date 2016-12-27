@@ -1,9 +1,6 @@
 package integrationtests
 
-import (
-	"testing"
-	"time"
-)
+import "testing"
 
 func Test_AlertAlertText_CanGetTheAlertText(t *testing.T) {
 	setUp()
@@ -19,8 +16,6 @@ func Test_AlertAlertText_CanGetTheAlertText(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error visiting URL")
 	}
-
-	time.Sleep(time.Second)
 
 	resp, err := driver.AlertText()
 	if err != nil || resp.State != "success" || resp.Text != "this is an alert" {

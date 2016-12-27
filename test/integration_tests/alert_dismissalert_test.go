@@ -2,7 +2,6 @@ package integrationtests
 
 import (
 	"testing"
-	"time"
 
 	goselenium "github.com/bunsenapp/go-selenium"
 )
@@ -21,8 +20,6 @@ func Test_AlertDismissAlert_CanDismissAnAlertCorrectly(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error visiting URL")
 	}
-
-	time.Sleep(time.Second)
 
 	resp, err := driver.DismissAlert()
 	if err != nil || resp.State != "success" {

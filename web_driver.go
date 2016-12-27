@@ -256,6 +256,15 @@ type WebDriver interface {
 	// AlertText gets the text associated with the current alert. If there is
 	// not an alert, it will throw an error.
 	AlertText() (*AlertTextResponse, error)
+
+	// SendAlertText enters the text specified into the value box.
+	//
+	// If the prompt is of type 'alert' or 'confirm', a communication error
+	// with code 'element not interactable' will be returned.
+	//
+	// If the prompt is anything other than 'prompt', a communication error with
+	// code 'unsupported operation' will be returned.
+	SendAlertText(text string) (*SendAlertTextResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
