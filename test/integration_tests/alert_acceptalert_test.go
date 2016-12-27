@@ -24,7 +24,7 @@ func Test_AlertAcceptAlert_CanAcceptAnAlertCorrectly(t *testing.T) {
 
 	resp, err := driver.AcceptAlert()
 	if err != nil || resp.State != "success" {
-		t.Errorf("Error returned or dismissing an alert was not a success")
+		t.Errorf("Error returned or accepting an alert was not a success")
 	}
 
 	printObjectResult(resp)
