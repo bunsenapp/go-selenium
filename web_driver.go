@@ -321,6 +321,9 @@ type Element interface {
 
 	// SendKeys sends a set of keystrokes to the currently selected element.
 	SendKeys(keys string) (*ElementSendKeysResponse, error)
+
+	// Screenshot takes a screenshot of the currently selected element.
+	Screenshot() (*ScreenshotResponse, error)
 }
 
 // Timeout is an interface which specifies what all timeout requests must follow.
