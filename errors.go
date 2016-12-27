@@ -1,28 +1,25 @@
 package goselenium
 
-import (
-	"encoding/json"
-	"fmt"
-)
+import "fmt"
 
 // ErrorResponse is what is returned from the Selenium API when an error
 // occurs.
 type ErrorResponse struct {
-	Message string `json:"state"`
-	Status  int    `json:"status"`
+	Message string
+	State   string
 }
 
 // CommunicationError is the result of a communication failure between
 // this library and the WebDriver API.
 type CommunicationError struct {
 	url      string
-	response *ErrorResponse
+	Response *ErrorResponse
 	method   string
 }
 
 // Error returns a formatted communication error string.
 func (c CommunicationError) Error() string {
-	return fmt.Sprintf("%s: api error, url: %s, err: %+v", c.method, c.url, c.response)
+	return fmt.Sprintf("%s: api error, url: %s, err: %+v", c.method, c.url, c.Response)
 }
 
 // IsCommunicationError checks whether an error is a selenium communication
@@ -34,11 +31,18 @@ func IsCommunicationError(err error) bool {
 
 func newCommunicationError(err error, method string, url string, resp []byte) CommunicationError {
 	var convertedResponse ErrorResponse
-	json.Unmarshal(resp, &convertedResponse)
+
+	reqErr, ok := err.(*requestError)
+	if ok {
+		convertedResponse = ErrorResponse{
+			Message: reqErr.Value.Message,
+			State:   reqErr.State,
+		}
+	}
 
 	return CommunicationError{
 		url:      url,
-		response: &convertedResponse,
+		Response: &convertedResponse,
 		method:   method,
 	}
 }

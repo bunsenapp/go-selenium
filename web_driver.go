@@ -1,5 +1,6 @@
 package goselenium
 
+// Keyboard keys converted from the ASCII code.
 const (
 	UnidentifiedKey   = string('\uE000')
 	CancelKey         = string('\uE001')
@@ -47,6 +48,39 @@ const (
 	F12Key            = string('\uE03C')
 	MetaKey           = string('\uE03D')
 	ZenkakuHankakuKey = string('\uE040')
+)
+
+// Error codes that are returned from Selenium. Infer that the
+// type of the error returned is CommunicationError, then do a comparison
+// on the err.Response.State field to one of the below constants.
+const (
+	ElementNotSelectable   = "element not selectable"
+	ElementNotInteractable = "element not interactable"
+	InsecureCertificate    = "insecure certificate"
+	InvalidArgument        = "invalid argument"
+	InvalidCookieDomain    = "invalid cookie domain"
+	InvalidCoordinates     = "invalid coordinates"
+	InvalidElementState    = "invalid element state"
+	InvalidSelector        = "invalid selector"
+	InvalidSessionID       = "invalid session id"
+	JavascriptError        = "javascript error"
+	MoveTargetOutOfBounds  = "move target out of bounds"
+	NoSuchAlert            = "no such alert"
+	NoSuchCookie           = "no such cookie"
+	NoSuchElement          = "no such element"
+	NoSuchFrame            = "no such frame"
+	NoSuchWindow           = "no such window"
+	ScriptTimeout          = "script timeout"
+	SessionNotCreated      = "session not created"
+	StaleElementReference  = "stale element reference"
+	TimeoutError           = "timeout"
+	UnableToSetCookie      = "unable to set cookie"
+	UnableToCaptureScreen  = "unable to capture screen"
+	UnexpectedAlertOpen    = "unexpected alert open"
+	UnknownCommand         = "unknown command"
+	UnknownError           = "unknown error"
+	UnknownMethod          = "unknown method"
+	UnsupportedOperation   = "unsupported operation"
 )
 
 // WebDriver is an interface which adheres to the W3C specification
@@ -206,6 +240,14 @@ type WebDriver interface {
 	// is passed as an empty string, all cookies for the current address will
 	// be deleted.
 	DeleteCookie(name string) (*DeleteCookieResponse, error)
+
+	/*
+		ALERT METHODS
+	*/
+
+	// DismissAlert dismisses an alert if there is one present on the
+	// dialogue if there is one present.
+	DismissAlert() (*DismissAlertResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
@@ -224,7 +266,8 @@ type Element interface {
 	// active element.
 	Attribute(att string) (*ElementAttributeResponse, error)
 
-	// CSSValue retrieves a CSS property associated with the current element. As an example, this could be the 'background' or 'font-family' properties.
+	// CSSValue retrieves a CSS property associated with the current element.
+	// As an example, this could be the 'background' or 'font-family' properties.
 	CSSValue(prop string) (*ElementCSSValueResponse, error)
 
 	// Text gets the value of element.innerText for the current element.
