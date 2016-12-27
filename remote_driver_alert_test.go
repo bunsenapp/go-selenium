@@ -136,3 +136,69 @@ func Test_AlertAcceptAlert_CorrectResponseIsReturned(t *testing.T) {
 		t.Errorf(correctResponseErrorText)
 	}
 }
+
+/*
+	AlertText() Tests
+*/
+
+func Test_AlertAlertText_InvalidSessionIdResultsInError(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+
+	_, err := d.AlertText()
+	if err == nil || !IsSessionIDError(err) {
+		t.Errorf(sessionIDErrorText)
+	}
+}
+
+func Test_AlertAlertText_CommunicationErrorIsReturnedCorrectly(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "",
+		errorToReturn: errors.New("An error :<"),
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	_, err := d.AlertText()
+	if err == nil || !IsCommunicationError(err) {
+		t.Errorf(apiCommunicationErrorText)
+	}
+}
+
+func Test_AlertAlertText_UnmarshallingErrorIsReturnedCorrectly(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn:  "Invalid JSON!",
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	_, err := d.AlertText()
+	if err == nil || !IsUnmarshallingError(err) {
+		t.Errorf(unmarshallingErrorText)
+	}
+}
+
+func Test_AlertAlertText_CorrectResponseIsReturned(t *testing.T) {
+	api := &testableAPIService{
+		jsonToReturn: `{
+			"state": "success",
+			"value": "this is text"
+		}`,
+		errorToReturn: nil,
+	}
+
+	d := setUpDriver(setUpDefaultCaps(), api)
+	d.sessionID = "12345"
+
+	resp, err := d.AlertText()
+	if err != nil || resp.State != "success" || resp.Text != "this is text" {
+		t.Errorf(correctResponseErrorText)
+	}
+}

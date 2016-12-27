@@ -252,6 +252,10 @@ type WebDriver interface {
 	// AcceptAlertResponse accepts an alert if there is one present. If not,
 	// it will throw an error.
 	AcceptAlert() (*AcceptAlertResponse, error)
+
+	// AlertText gets the text associated with the current alert. If there is
+	// not an alert, it will throw an error.
+	AlertText() (*AlertTextResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
