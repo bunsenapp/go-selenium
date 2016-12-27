@@ -245,9 +245,13 @@ type WebDriver interface {
 		ALERT METHODS
 	*/
 
-	// DismissAlert dismisses an alert if there is one present on the
-	// dialogue if there is one present.
+	// DismissAlert dismisses an alert if there is one present. If not, it will
+	// throw an error.
 	DismissAlert() (*DismissAlertResponse, error)
+
+	// AcceptAlertResponse accepts an alert if there is one present. If not,
+	// it will throw an error.
+	AcceptAlert() (*AcceptAlertResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
