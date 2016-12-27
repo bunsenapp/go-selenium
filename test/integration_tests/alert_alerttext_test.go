@@ -9,17 +9,17 @@ func Test_AlertAlertText_CanGetTheAlertText(t *testing.T) {
 	driver := createDriver(t)
 	_, err := driver.CreateSession()
 	if err != nil {
-		t.Errorf("Create session error")
+		errorAndWrap(t, "Error creating session.", err)
 	}
 
 	_, err = driver.Go("https://heraclmene.github.io/helpers/goselenium/alert.html")
 	if err != nil {
-		t.Errorf("Error visiting URL")
+		errorAndWrap(t, "Error visiting URL.", err)
 	}
 
 	resp, err := driver.AlertText()
 	if err != nil || resp.State != "success" || resp.Text != "this is an alert" {
-		t.Errorf("Error returned or alert text was not correct")
+		errorAndWrap(t, "Error getting alert text.", err)
 	}
 
 	printObjectResult(resp)

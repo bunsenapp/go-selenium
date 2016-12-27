@@ -13,17 +13,17 @@ func Test_AlertDismissAlert_CanDismissAnAlertCorrectly(t *testing.T) {
 	driver := createDriver(t)
 	_, err := driver.CreateSession()
 	if err != nil {
-		t.Errorf("Create session error")
+		errorAndWrap(t, "Error creating session", err)
 	}
 
 	_, err = driver.Go("https://heraclmene.github.io/helpers/goselenium/alert.html")
 	if err != nil {
-		t.Errorf("Error visiting URL")
+		errorAndWrap(t, "Error visiting URL", err)
 	}
 
 	resp, err := driver.DismissAlert()
 	if err != nil || resp.State != "success" {
-		t.Errorf("Error returned or dismissing an alert was not a success")
+		errorAndWrap(t, "Alert response was not correct", err)
 	}
 
 	printObjectResult(resp)
@@ -36,22 +36,22 @@ func Test_AlertDismissAlert_DismissingAnInvalidAlertResultsInAnError(t *testing.
 	driver := createDriver(t)
 	_, err := driver.CreateSession()
 	if err != nil {
-		t.Errorf("Create session error")
+		errorAndWrap(t, "Error creating session", err)
 	}
 
 	_, err = driver.Go("https://google.com")
 	if err != nil {
-		t.Errorf("Error visiting URL")
+		errorAndWrap(t, "Error visiting URL", err)
 	}
 
 	resp, err := driver.DismissAlert()
 	if err != nil {
 		comErr := err.(goselenium.CommunicationError)
 		if comErr.Response.State != goselenium.NoSuchAlert {
-			t.Errorf("Incorrect error was returned.")
+			errorAndWrap(t, "Incorrect result returned", err)
 		}
 	} else {
-		t.Errorf("Error was not returned when it should have been.")
+		errorAndWrap(t, "Incorrect result returned", err)
 	}
 
 	printObjectResult(resp)

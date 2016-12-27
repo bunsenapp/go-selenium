@@ -13,32 +13,32 @@ func Test_AlertSendAlertText_CanSendAlertTextCorrectly(t *testing.T) {
 	driver := createDriver(t)
 	_, err := driver.CreateSession()
 	if err != nil {
-		t.Errorf("Create session error")
+		errorAndWrap(t, "Error creating session", err)
 	}
 
 	_, err = driver.Go("https://heraclmene.github.io/helpers/goselenium/prompt.html")
 	if err != nil {
-		t.Errorf("Error visiting URL")
+		errorAndWrap(t, "Error visiting URL", err)
 	}
 
 	resp, err := driver.SendAlertText("test")
 	if err != nil || resp.State != "success" {
-		t.Errorf("Error returned or sending alert text was not a success")
+		errorAndWrap(t, "Error sending alert text", err)
 	}
 
 	_, err = driver.AcceptAlert()
 	if err != nil {
-		t.Errorf("Error was returned when accepting alert.")
+		errorAndWrap(t, "Error accepting alert", err)
 	}
 
 	_, err = driver.AlertText()
 	if err != nil {
 		comErr := err.(goselenium.CommunicationError)
 		if comErr.Response.State != goselenium.NoSuchAlert {
-			t.Errorf("Error returned was not correct.")
+			errorAndWrap(t, "Error returned was not correct", err)
 		}
 	} else {
-		t.Errorf("Error returned was not correct.")
+		errorAndWrap(t, "Error returned was not correct", err)
 	}
 
 	printObjectResult(resp)

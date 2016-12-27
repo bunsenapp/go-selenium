@@ -9,17 +9,17 @@ func Test_AlertAcceptAlert_CanAcceptAnAlertCorrectly(t *testing.T) {
 	driver := createDriver(t)
 	_, err := driver.CreateSession()
 	if err != nil {
-		t.Errorf("Create session error")
+		errorAndWrap(t, "Create session error", err)
 	}
 
 	_, err = driver.Go("https://heraclmene.github.io/helpers/goselenium/alert.html")
 	if err != nil {
-		t.Errorf("Error visiting URL")
+		errorAndWrap(t, "Error navigating to URL", err)
 	}
 
 	resp, err := driver.AcceptAlert()
 	if err != nil || resp.State != "success" {
-		t.Errorf("Error returned or accepting an alert was not a success")
+		errorAndWrap(t, "Error accepting alert", err)
 	}
 
 	printObjectResult(resp)

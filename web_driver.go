@@ -265,6 +265,14 @@ type WebDriver interface {
 	// If the prompt is anything other than 'prompt', a communication error with
 	// code 'unsupported operation' will be returned.
 	SendAlertText(text string) (*SendAlertTextResponse, error)
+
+	/*
+		SCREEN CAPTURE METHODS
+	*/
+
+	// Screenshot takes a screenshot of the window of the current top level
+	// browsing context.
+	Screenshot() (*ScreenshotResponse, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements
