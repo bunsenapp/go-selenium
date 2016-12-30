@@ -1,5 +1,7 @@
 package goselenium
 
+import "time"
+
 // Keyboard keys converted from the ASCII code.
 const (
 	UnidentifiedKey   = string('\uE000')
@@ -273,6 +275,15 @@ type WebDriver interface {
 	// Screenshot takes a screenshot of the window of the current top level
 	// browsing context.
 	Screenshot() (*ScreenshotResponse, error)
+
+	/*
+		HELPER METHODS
+	*/
+
+	// Wait repeats an action until the action yields a valid result or
+	// until the timeout is reached. This is useful when your page uses
+	// set timeout functions consistently.
+	Wait(u Until, timeout time.Duration) (bool, error)
 }
 
 // Element is an interface which specifies what all WebDriver elements

@@ -16,7 +16,7 @@ func Test_AlertSendAlertText_CanSendAlertTextCorrectly(t *testing.T) {
 		errorAndWrap(t, "Error creating session", err)
 	}
 
-	_, err = driver.Go("https://heraclmene.github.io/helpers/goselenium/prompt.html")
+	_, err = driver.Go("https://bunsenapp.github.io/go-selenium/helpers/prompt.html")
 	if err != nil {
 		errorAndWrap(t, "Error visiting URL", err)
 	}

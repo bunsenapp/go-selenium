@@ -49,7 +49,7 @@ func Test_ElementEnabled_DisabledElementIsReturnedCorrectly(t *testing.T) {
 			exp: true,
 		},
 		{
-			url: "https://heraclmene.github.io/helpers/goselenium/disabled.html",
+			url: "https://bunsenapp.github.io/go-selenium/helpers/disabled.html",
 			by:  goselenium.ByCSSSelector("input"),
 			exp: false,
 		},

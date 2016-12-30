@@ -15,7 +15,7 @@ func Test_ElementClear_ElementsAreClearedSuccessfully(t *testing.T) {
 		by  goselenium.By
 	}{
 		{
-			url: "https://heraclmene.github.io/helpers/goselenium/clear.html",
+			url: "https://bunsenapp.github.io/go-selenium/helpers/clear.html",
 			by:  goselenium.ByCSSSelector("input#should-clear"),
 		},
 	}

@@ -12,7 +12,7 @@ func Test_AlertAlertText_CanGetTheAlertText(t *testing.T) {
 		errorAndWrap(t, "Error creating session.", err)
 	}
 
-	_, err = driver.Go("https://heraclmene.github.io/helpers/goselenium/alert.html")
+	_, err = driver.Go("https://bunsenapp.github.io/go-selenium/helpers/alert.html")
 	if err != nil {
 		errorAndWrap(t, "Error visiting URL.", err)
 	}

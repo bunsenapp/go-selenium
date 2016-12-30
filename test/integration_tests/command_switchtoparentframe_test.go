@@ -16,7 +16,7 @@ func Test_CommandSwitchToParentFrame_CorrectResponseCanBeReturned(t *testing.T) 
 		errorAndWrap(t, "Error thrown whilst creating session.", err)
 	}
 
-	_, err = driver.Go("https://heraclmene.github.io/helpers/goselenium/iframe.html")
+	_, err = driver.Go("https://bunsenapp.github.io/go-selenium/helpers/iframe.html")
 	if err != nil {
 		errorAndWrap(t, "Error was thrown whilst navigating.", err)
 	}

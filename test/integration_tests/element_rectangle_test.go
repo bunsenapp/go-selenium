@@ -16,7 +16,7 @@ func Test_ElementRectangle_SizeIsReturnedCorrectly(t *testing.T) {
 		errorAndWrap(t, "Error thrown whilst creating session.", err)
 	}
 
-	_, err = driver.Go("https://heraclmene.github.io/helpers/goselenium/size.html")
+	_, err = driver.Go("https://bunsenapp.github.io/go-selenium/helpers/size.html")
 	if err != nil {
 		errorAndWrap(t, "Error thrown whilst visiting url.", err)
 	}

@@ -21,7 +21,7 @@ func Test_ElementSelected_CheckedElementReturnsCorrectly(t *testing.T) {
 			errorAndWrap(t, "Error thrown whilst creating session.", err)
 		}
 
-		_, err = driver.Go("https://heraclmene.github.io/helpers/goselenium/selected.html")
+		_, err = driver.Go("https://bunsenapp.github.io/go-selenium/helpers/selected.html")
 		if err != nil {
 			errorAndWrap(t, "Error thrown whilst visiting url.", err)
 		}
@@ -57,7 +57,7 @@ func Test_ElementSelected_UncheckedElementReturnsCorrectly(t *testing.T) {
 			errorAndWrap(t, "Error thrown whilst creating session.", err)
 		}
 
-		_, err = driver.Go("https://heraclmene.github.io/helpers/goselenium/selected.html")
+		_, err = driver.Go("https://bunsenapp.github.io/go-selenium/helpers/selected.html")
 		if err != nil {
 			errorAndWrap(t, "Error thrown whilst visiting url.", err)
 		}
