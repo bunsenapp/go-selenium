@@ -25,8 +25,6 @@ func UntilElementPresent(by By, sleep time.Duration) Until {
 func (s *seleniumWebDriver) Wait(u Until, timeout time.Duration) (bool, error) {
 	response := make(chan *waitResponse, 1)
 
-	// Loops continuously until the timeout is reached or the result is a
-	// success.
 	go func() {
 		for {
 			s, e := u(s)
