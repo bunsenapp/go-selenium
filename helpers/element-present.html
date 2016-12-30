@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>GoSelenium Helpers - Element Present</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			(function() {
+				setTimeout(function() {
+					var el = document.createElement('div');
+					el.id = "not-present-div";
+
+					document.body.appendChild(el);
+				}, 2000)
+			})();
+		</script>
+	</body>
+</html>
