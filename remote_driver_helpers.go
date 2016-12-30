@@ -30,6 +30,7 @@ func (s *seleniumWebDriver) Wait(u Until, timeout time.Duration) (bool, error) {
 			s, e := u(s)
 			if e == nil && s {
 				response <- &waitResponse{s: s, e: e}
+				break
 			}
 		}
 	}()
