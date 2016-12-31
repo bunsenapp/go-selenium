@@ -51,7 +51,7 @@ func main() {
 	// Wait until the URL has changed with a timeout of 1 second and a check
 	// interval of 10ms..
 	newLink := "https://news.ycombinator.com/newest"
-	ok := driver.Wait(goselenium.UntilURLIs(newLink), 10*time.Second, 10*time.Millisecond)
+	ok := driver.Wait(goselenium.UntilURLIs(newLink), 1*time.Second, 10*time.Millisecond)
 	if !ok {
 		fmt.Println("Wait timed out :<")
 		return
