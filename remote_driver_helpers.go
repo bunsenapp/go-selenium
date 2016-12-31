@@ -27,15 +27,16 @@ func (s *seleniumWebDriver) Wait(u Until, timeout time.Duration) (bool, error) {
 	quit := make(chan bool, 1)
 
 	go func() {
+	outer:
 		for {
 			select {
 			case <-quit:
-				break
+				break outer
 			default:
 				s, e := u(s)
 				if e == nil && s {
 					response <- &waitResponse{s: s, e: e}
-					break
+					break outer
 				}
 			}
 		}
