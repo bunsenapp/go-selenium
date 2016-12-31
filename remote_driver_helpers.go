@@ -24,13 +24,19 @@ func UntilElementPresent(by By, sleep time.Duration) Until {
 
 func (s *seleniumWebDriver) Wait(u Until, timeout time.Duration) (bool, error) {
 	response := make(chan *waitResponse, 1)
+	quit := make(chan bool, 1)
 
 	go func() {
 		for {
-			s, e := u(s)
-			if e == nil && s {
-				response <- &waitResponse{s: s, e: e}
+			select {
+			case <-quit:
 				break
+			default:
+				s, e := u(s)
+				if e == nil && s {
+					response <- &waitResponse{s: s, e: e}
+					break
+				}
 			}
 		}
 	}()
@@ -39,6 +45,7 @@ func (s *seleniumWebDriver) Wait(u Until, timeout time.Duration) (bool, error) {
 	case r := <-response:
 		return r.s, r.e
 	case <-time.After(timeout):
+		close(quit)
 		return false, WaitTimeoutError
 	}
 }
