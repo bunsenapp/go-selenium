@@ -27,6 +27,9 @@ func main() {
 		return
 	}
 
+	// Defer the deletion of the session.
+	defer driver.DeleteSession()
+
 	// Navigate to Google.
 	_, err = driver.Go("https://www.google.com")
 	if err != nil {
@@ -35,10 +38,4 @@ func main() {
 
 	// Hooray, we navigated to Google!
 	fmt.Println("Successfully navigated to Google!")
-
-	// Delete the session to ensure the Selenium hub doesn't fall over.
-	_, err = driver.DeleteSession()
-	if err != nil {
-		fmt.Println(err)
-	}
 }
