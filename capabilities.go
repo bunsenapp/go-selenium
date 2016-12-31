@@ -86,7 +86,7 @@ func (c *Capabilities) SetBrowser(b Browser) {
 
 func (c *Capabilities) toJSON() (string, error) {
 	capabilities := map[string]map[string]interface{}{
-		"desiredCapabilities": map[string]interface{}{
+		"desiredCapabilities": {
 			"browserName": c.browser.BrowserName(),
 		},
 	}
