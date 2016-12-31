@@ -25,7 +25,7 @@ and then import the library in your project:
 
 ## Getting started
 
-Please see the `examples/getting-started/main.go` file.
+Please see the [examples/getting-started/main.go](https://github.com/bunsenapp/go-selenium/blob/master/examples/getting-started/main.go) file.
 
 ## Examples
 
