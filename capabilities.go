@@ -2,6 +2,7 @@ package goselenium
 
 import "encoding/json"
 
+// Browser defines a supported selenium enabled browser.
 type Browser interface {
 	BrowserName() string
 }
@@ -24,6 +25,41 @@ func FirefoxBrowser() Browser {
 // ChromeBrowser returns a Chrome browser object.
 func ChromeBrowser() Browser {
 	return browser{"chrome"}
+}
+
+// AndroidBrowser returns an Android browser object.
+func AndroidBrowser() Browser {
+	return browser{"android"}
+}
+
+// HTMLUnitBrowser returns a HTMLUnit browser object.
+func HTMLUnitBrowser() Browser {
+	return browser{"htmlunit"}
+}
+
+// InternetExplorerBrowser returns an IE browser object.
+func InternetExplorerBrowser() Browser {
+	return browser{"internetexplorer"}
+}
+
+// IPhoneBrowser returns an IPhone browser object.
+func IPhoneBrowser() Browser {
+	return browser{"iphone"}
+}
+
+// IPadBrowser returns an IPad browser object.
+func IPadBrowser() Browser {
+	return browser{"ipad"}
+}
+
+// OperaBrowser returns an Opera browser object.
+func OperaBrowser() Browser {
+	return browser{"opera"}
+}
+
+// SafariBrowser returns a Safari browser object.
+func SafariBrowser() Browser {
+	return browser{"safari"}
 }
 
 // Capabilities represents the capabilities defined in the W3C specification.

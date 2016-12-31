@@ -23,8 +23,8 @@ func Test_ElementWaitUntilElementPresent_CanSucceed(t *testing.T) {
 	}
 
 	by := goselenium.ByCSSSelector("#not-present-div")
-	resp, err := driver.Wait(goselenium.UntilElementPresent(by, 0), 20*time.Second)
-	if err != nil || !resp {
+	resp := driver.Wait(goselenium.UntilElementPresent(by), 20*time.Second, 0)
+	if !resp {
 		errorAndWrap(t, "Error waiting for element to be visible or it timed out", err)
 	}
 
@@ -47,8 +47,8 @@ func Test_ElementWaitUntilElementPresent_NotFoundPriorToTimeoutFails(t *testing.
 	}
 
 	by := goselenium.ByCSSSelector("#not-present-div")
-	resp, err := driver.Wait(goselenium.UntilElementPresent(by, 0), 1*time.Second)
-	if err == nil {
+	resp := driver.Wait(goselenium.UntilElementPresent(by), 1*time.Second, 0)
+	if resp {
 		errorAndWrap(t, "Error was not thrown when it should have been", err)
 	}
 

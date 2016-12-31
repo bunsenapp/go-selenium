@@ -281,9 +281,13 @@ type WebDriver interface {
 	*/
 
 	// Wait repeats an action until the action yields a valid result or
-	// until the timeout is reached. This is useful when your page uses
-	// set timeout functions consistently.
-	Wait(u Until, timeout time.Duration) (bool, error)
+	// until the timeout is reached. If the timeout is reached without
+	// the until function returning a satisfactory result, this method
+	// will return false.
+	//
+	// time.Sleep will be called with the sleep parameter after every
+	// u iteration.
+	Wait(u Until, timeout time.Duration, sleep time.Duration) bool
 }
 
 // Element is an interface which specifies what all WebDriver elements

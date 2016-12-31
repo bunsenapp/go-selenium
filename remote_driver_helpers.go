@@ -2,28 +2,29 @@ package goselenium
 
 import "time"
 
-type waitResponse struct {
-	s bool
-	e error
-}
-
 // Until represents a function that will be continuously repeated until it
 // succeeds or a timeout is reached.
-type Until func(w WebDriver) (bool, error)
+type Until func(w WebDriver) bool
 
 // UntilElementPresent attempts to locate an element on the page. It is
 // determined as existing if the state is 'Success' and the error is nil.
-func UntilElementPresent(by By, sleep time.Duration) Until {
-	return func(w WebDriver) (bool, error) {
-		time.Sleep(sleep)
-
-		el, err := w.FindElement(by)
-		return err == nil && el != nil, err
+func UntilElementPresent(by By) Until {
+	return func(w WebDriver) bool {
+		_, err := w.FindElement(by)
+		return err == nil
 	}
 }
 
-func (s *seleniumWebDriver) Wait(u Until, timeout time.Duration) (bool, error) {
-	response := make(chan *waitResponse, 1)
+// UntilURLIs checks whether or not the page's URL has changed.
+func UntilURLIs(url string) Until {
+	return func(w WebDriver) bool {
+		resp, err := w.CurrentURL()
+		return err == nil && resp.URL == url
+	}
+}
+
+func (s *seleniumWebDriver) Wait(u Until, timeout time.Duration, sleep time.Duration) bool {
+	response := make(chan bool, 1)
 	quit := make(chan bool, 1)
 
 	go func() {
@@ -33,20 +34,22 @@ func (s *seleniumWebDriver) Wait(u Until, timeout time.Duration) (bool, error) {
 			case <-quit:
 				break outer
 			default:
-				s, e := u(s)
-				if e == nil && s {
-					response <- &waitResponse{s: s, e: e}
+				e := u(s)
+				if e {
+					response <- true
 					break outer
 				}
 			}
+
+			time.Sleep(sleep)
 		}
 	}()
 
 	select {
 	case r := <-response:
-		return r.s, r.e
+		return r
 	case <-time.After(timeout):
 		close(quit)
-		return false, WaitTimeoutError
+		return false
 	}
 }
