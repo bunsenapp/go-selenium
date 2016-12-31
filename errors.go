@@ -1,9 +1,6 @@
 package goselenium
 
-import (
-	"errors"
-	"fmt"
-)
+import "fmt"
 
 // ErrorResponse is what is returned from the Selenium API when an error
 // occurs.
@@ -145,6 +142,3 @@ func IsInvalidURLError(err error) bool {
 func newInvalidURLError(url string) InvalidURLError {
 	return InvalidURLError(url)
 }
-
-// WaitTimeoutError is returned when a Wait call has timed out.
-var WaitTimeoutError error = errors.New("wait action timed out")

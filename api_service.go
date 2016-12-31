@@ -38,7 +38,7 @@ func (a seleniumAPIService) performRequest(url string, method string, body io.Re
 	client := http.Client{}
 	resp, err := client.Do(request)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("%s: an unexpected communication failure occurred, error: %s", method, err.Error()))
+		return nil, fmt.Errorf("%s: an unexpected communication failure occurred, error: %s", method, err.Error())
 	}
 
 	defer resp.Body.Close()
@@ -54,10 +54,10 @@ func (a seleniumAPIService) performRequest(url string, method string, body io.Re
 		err := json.Unmarshal(r, &reqErr)
 		if err == nil {
 			return nil, &reqErr
-		} else {
-			errStr = fmt.Sprintf("Status code %v returned with no body", resp.StatusCode)
-			return nil, errors.New(errStr)
 		}
+
+		errStr = fmt.Sprintf("Status code %v returned with no body", resp.StatusCode)
+		return nil, errors.New(errStr)
 	}
 
 	return r, nil

@@ -19,7 +19,7 @@ type WindowHandleResponse struct {
 // As per the W3C specification, it yields all of the available window handles
 // minus the active one that closes as a result of the CloseWindow() call.
 type CloseWindowResponse struct {
-	State   string   `json:state"`
+	State   string   `json:"state"`
 	Handles []string `json:"value"`
 }
 
@@ -31,7 +31,7 @@ type SwitchToWindowResponse struct {
 
 // WindowHandlesResponse is the response returned from the WindowHandles()
 // method. This is essentially an array of available window handlers that
-// aren't neccessarily active.
+// aren't necessarily active.
 type WindowHandlesResponse struct {
 	State   string   `json:"state"`
 	Handles []string `json:"value"`
