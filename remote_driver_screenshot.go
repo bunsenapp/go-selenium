@@ -13,6 +13,9 @@ type ScreenshotResponse struct {
 }
 
 // ImageBytes is a helpful function for decoding the base64 encoded image URL.
+// The image returned is a PNG image and as such can be manipulated by the
+// image/png package. Trying to save this as any other image type will
+// result in it failing to open.
 func (s *ScreenshotResponse) ImageBytes() ([]byte, error) {
 	return base64.StdEncoding.DecodeString(s.EncodedImage)
 }

@@ -273,7 +273,7 @@ type WebDriver interface {
 	*/
 
 	// Screenshot takes a screenshot of the window of the current top level
-	// browsing context.
+	// browsing context. The image returned will be a PNG image.
 	Screenshot() (*ScreenshotResponse, error)
 
 	/*
