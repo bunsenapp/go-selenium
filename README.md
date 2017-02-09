@@ -50,8 +50,3 @@ All documentation is available on the godoc.org website: [https://godoc.org/gith
 1. Download the Selenium standalone server from the following URL: http://www.seleniumhq.org/download/
 2. Download the appropriate web driver executable and include it in your path. For Firefox, that will be the Gecko driver. 
 3. Run the Selenium server with the following command: `java -jar selenium-server-standalone-3.0.1.jar`.
-
-
-## Version
-
-This project is currently in an alpha state. This means it is fairly new and hasn't been used all that much in the big wide world. Fortunately, this doesn't mean it's not stable. The project been developed in such a way that any changes will not leave you having to re-write your code. 
