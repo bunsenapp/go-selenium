@@ -4,6 +4,12 @@
 [![GoDoc](https://godoc.org/github.com/bunsenapp/go-selenium?status.svg)](https://godoc.org/github.com/bunsenapp/go-selenium)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bunsenapp/go-selenium)](https://goreportcard.com/report/github.com/bunsenapp/go-selenium)
 
+## Maintainer Required
+
+This package is no longer maintained. The author no longer uses Go, and will only fix this package should there be a major security issue.
+
+If you or someone you know is interested in maintaining this package, please raise an issue and tag me (@elsyms) in it.
+
 ## Introduction
 
 Yes, yet another Selenium Web Driver library has been brought to the table. This one, however, is slightly different. 
