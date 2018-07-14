@@ -6,7 +6,7 @@
 
 ## Maintainer Required
 
-This package is no longer maintained. The author no longer uses Go, and will only fix this package should there be a major security issue.
+This package is no longer maintained. The author no longer writes automated tests with Selenium, and will only fix this package should there be a major security issue.
 
 If you or someone you know is interested in maintaining this package, please raise an issue and tag me (@elsyms) in it.
 
