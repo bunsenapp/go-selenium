@@ -7,15 +7,11 @@ import (
 )
 
 type findElementResponse struct {
-	E element `json:"value"`
+	E map[string]string `json:"value"`
 }
 
 type findElementsResponse struct {
-	E []element `json:"value"`
-}
-
-type element struct {
-	ID string `json:"element"`
+	E map[string]string `json:"value"`
 }
 
 func (s *seleniumWebDriver) FindElement(by By) (Element, error) {
@@ -46,8 +42,14 @@ func (s *seleniumWebDriver) FindElement(by By) (Element, error) {
 		return nil, newUnmarshallingError(err, "FindElement", string(resp))
 	}
 
-	el := newSeleniumElement(response.E.ID, s)
-	return el, nil
+	var values []string
+	for _, value := range response.E {
+		values = append(values, value)
+	}
+	if len(values) > 0 {
+		return newSeleniumElement(values[0], s), nil
+	}
+	return nil, errors.New("Not Found")
 }
 
 func (s *seleniumWebDriver) FindElements(by By) ([]Element, error) {
@@ -79,8 +81,8 @@ func (s *seleniumWebDriver) FindElements(by By) ([]Element, error) {
 	}
 
 	elements := make([]Element, len(response.E))
-	for i := range response.E {
-		elements[i] = newSeleniumElement(response.E[i].ID, s)
+	for _, el := range response.E {
+		elements = append(elements, newSeleniumElement(el, s))
 	}
 
 	return elements, nil
