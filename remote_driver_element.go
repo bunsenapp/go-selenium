@@ -80,7 +80,7 @@ func (s *seleniumWebDriver) FindElements(by By) ([]Element, error) {
 		return nil, newUnmarshallingError(err, "FindElements", string(resp))
 	}
 
-	elements := make([]Element, len(response.E))
+	var elements []Element
 	for _, el := range response.E {
 		elements = append(elements, newSeleniumElement(el, s))
 	}
