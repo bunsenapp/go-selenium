@@ -41,13 +41,9 @@ func (s *seleniumWebDriver) FindElement(by By) (Element, error) {
 	if err != nil {
 		return nil, newUnmarshallingError(err, "FindElement", string(resp))
 	}
-
-	var values []string
+	
 	for _, value := range response.E {
-		values = append(values, value)
-	}
-	if len(values) > 0 {
-		return newSeleniumElement(values[0], s), nil
+		return newSeleniumElement(value, s), nil
 	}
 	return nil, errors.New("Not Found")
 }
